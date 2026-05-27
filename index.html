@@ -25,461 +25,120 @@
     --font-main: 'Noto Sans TC', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-main); background: var(--blue-dark); color: var(--gray-text); min-height: 100vh; display: flex; flex-direction: column; }
 
-  body {
-    font-family: var(--font-main);
-    background: var(--blue-dark);
-    color: var(--gray-text);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* ── 頂部標題列 ── */
-  header {
-    background: var(--blue-mid);
-    border-bottom: 1px solid var(--border);
-    padding: 0 24px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-  .header-icon {
-    width: 36px; height: 36px;
-    background: linear-gradient(135deg, var(--blue-accent), var(--blue-light));
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
-  }
-  header h1 {
-    font-size: 16px; font-weight: 700;
-    color: #fff;
-    letter-spacing: 0.02em;
-  }
-  header p {
-    font-size: 11px; color: var(--gray-dim);
-    margin-top: 1px;
-  }
-  .header-badge {
-    margin-left: auto;
-    background: rgba(46,204,113,0.12);
-    border: 1px solid rgba(46,204,113,0.3);
-    color: var(--green);
-    font-size: 11px;
-    font-family: var(--font-mono);
-    padding: 3px 10px;
-    border-radius: 20px;
-    display: flex; align-items: center; gap: 5px;
-  }
-  .status-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--green);
-    animation: pulse 2s infinite;
-  }
+  header { background: var(--blue-mid); border-bottom: 1px solid var(--border); padding: 0 24px; height: 60px; display: flex; align-items: center; gap: 14px; position: sticky; top: 0; z-index: 10; }
+  .header-icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--blue-accent), var(--blue-light)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  header h1 { font-size: 16px; font-weight: 700; color: #fff; letter-spacing: 0.02em; }
+  header p { font-size: 11px; color: var(--gray-dim); margin-top: 1px; }
+  .header-badge { margin-left: auto; background: rgba(46,204,113,0.12); border: 1px solid rgba(46,204,113,0.3); color: var(--green); font-size: 11px; font-family: var(--font-mono); padding: 3px 10px; border-radius: 20px; display: flex; align-items: center; gap: 5px; }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-  /* ── 主體佈局 ── */
-  .main {
-    display: flex;
-    flex: 1;
-    height: calc(100vh - 60px);
-  }
+  .main { display: flex; flex: 1; height: calc(100vh - 60px); }
 
-  /* ── 左側邊欄 ── */
-  .sidebar {
-    width: 220px;
-    background: var(--blue-mid);
-    border-right: 1px solid var(--border);
-    padding: 16px 0;
-    overflow-y: auto;
-    flex-shrink: 0;
-  }
-  .sidebar-section {
-    padding: 0 14px 8px;
-    font-size: 10px;
-    font-family: var(--font-mono);
-    color: var(--gray-dim);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-  .sidebar-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 9px 14px;
-    font-size: 12px;
-    color: var(--gray-dim);
-    cursor: pointer;
-    border-left: 3px solid transparent;
-    transition: all 0.15s;
-  }
-  .sidebar-item:hover {
-    background: rgba(255,255,255,0.04);
-    color: var(--gray-text);
-  }
-  .sidebar-item.active {
-    border-left-color: var(--blue-light);
-    background: rgba(58,142,245,0.08);
-    color: #fff;
-  }
+  .sidebar { width: 220px; background: var(--blue-mid); border-right: 1px solid var(--border); padding: 16px 0; overflow-y: auto; flex-shrink: 0; }
+  .sidebar-section { padding: 0 14px 8px; font-size: 10px; font-family: var(--font-mono); color: var(--gray-dim); letter-spacing: 0.1em; text-transform: uppercase; }
+  .sidebar-item { display: flex; align-items: center; gap: 10px; padding: 9px 14px; font-size: 12px; color: var(--gray-dim); cursor: pointer; border-left: 3px solid transparent; transition: all 0.15s; }
+  .sidebar-item:hover { background: rgba(255,255,255,0.04); color: var(--gray-text); }
+  .sidebar-item.active { border-left-color: var(--blue-light); background: rgba(58,142,245,0.08); color: #fff; }
   .sidebar-item .icon { font-size: 15px; min-width: 18px; }
-  .fault-cat {
-    font-size: 10px;
-    font-family: var(--font-mono);
-    padding: 2px 6px;
-    border-radius: 4px;
-    margin-left: auto;
-  }
+  .fault-cat { font-size: 10px; font-family: var(--font-mono); padding: 2px 6px; border-radius: 4px; margin-left: auto; }
   .cat-net { background: rgba(26,111,212,0.2); color: #5aaeff; }
   .cat-tel { background: rgba(15,168,144,0.2); color: #3dd6be; }
   .cat-mod { background: rgba(245,166,35,0.2); color: #f5c46a; }
   .sidebar-divider { height: 1px; background: var(--border); margin: 8px 14px; }
 
-  /* ── 聊天區 ── */
-  .chat-area {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-  .chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 24px 24px 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    scroll-behavior: smooth;
-  }
+  .chat-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .chat-messages { flex: 1; overflow-y: auto; padding: 24px 24px 12px; display: flex; flex-direction: column; gap: 16px; scroll-behavior: smooth; }
   .chat-messages::-webkit-scrollbar { width: 4px; }
-  .chat-messages::-webkit-scrollbar-track { background: transparent; }
   .chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
 
-  /* ── 訊息氣泡 ── */
   .msg-wrap { display: flex; gap: 10px; align-items: flex-start; animation: fadeUp 0.25s ease; }
   .msg-wrap.user { flex-direction: row-reverse; }
   @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
 
-  .avatar {
-    width: 30px; height: 30px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 500; flex-shrink: 0;
-    margin-top: 2px;
-  }
+  .avatar { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; flex-shrink: 0; margin-top: 2px; }
   .bot-av { background: linear-gradient(135deg, var(--blue-accent), var(--teal)); color: #fff; }
   .user-av { background: var(--surface2); color: var(--gray-dim); border: 1px solid var(--border); }
 
   .bubble-wrap { max-width: 72%; display: flex; flex-direction: column; gap: 6px; }
   .msg-wrap.user .bubble-wrap { align-items: flex-end; }
+  .bubble { padding: 11px 15px; border-radius: 16px; font-size: 13.5px; line-height: 1.7; }
+  .bot-bubble { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px 16px 16px 16px; color: var(--gray-text); }
+  .user-bubble { background: var(--blue-accent); border-radius: 16px 4px 16px 16px; color: #fff; }
 
-  .bubble {
-    padding: 11px 15px;
-    border-radius: 16px;
-    font-size: 13.5px;
-    line-height: 1.7;
-  }
-  .bot-bubble {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 4px 16px 16px 16px;
-    color: var(--gray-text);
-  }
-  .user-bubble {
-    background: var(--blue-accent);
-    border-radius: 16px 4px 16px 16px;
-    color: #fff;
-  }
-
-  /* 分類標籤 */
-  .classify-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 11.5px; font-weight: 500;
-    font-family: var(--font-mono);
-    margin-bottom: 8px;
-  }
-  .badge-net { background: rgba(26,111,212,0.15); border: 1px solid rgba(26,111,212,0.4); color: #5aaeff; }
-  .badge-tel { background: rgba(15,168,144,0.15); border: 1px solid rgba(15,168,144,0.4); color: #3dd6be; }
-  .badge-mod { background: rgba(245,166,35,0.15); border: 1px solid rgba(245,166,35,0.4); color: #f5c46a; }
-  .badge-warn { background: rgba(232,68,90,0.15); border: 1px solid rgba(232,68,90,0.4); color: #ff6a80; }
-
-  /* 快捷按鈕 */
   .quick-btns { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-  .qbtn {
-    background: var(--surface);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 20px;
-    padding: 6px 14px;
-    font-size: 12px;
-    font-family: var(--font-main);
-    color: var(--gray-text);
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .qbtn:hover {
-    background: var(--blue-accent);
-    border-color: var(--blue-accent);
-    color: #fff;
-  }
+  .qbtn { background: var(--surface); border: 1px solid rgba(255,255,255,0.12); border-radius: 20px; padding: 6px 14px; font-size: 12px; font-family: var(--font-main); color: var(--gray-text); cursor: pointer; transition: all 0.15s; }
+  .qbtn:hover { background: var(--blue-accent); border-color: var(--blue-accent); color: #fff; }
 
-  /* 進度條 */
-  .progress-bar {
-    height: 3px;
-    background: rgba(255,255,255,0.06);
-    border-radius: 2px;
-    margin-bottom: 4px;
-    overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--blue-accent), var(--teal));
-    border-radius: 2px;
-    transition: width 0.4s ease;
-  }
-  .progress-label {
-    font-size: 10px; font-family: var(--font-mono);
-    color: var(--gray-dim); margin-bottom: 10px;
-  }
-
-  /* 查修摘要卡片 */
-  .summary-card {
-    background: var(--surface);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 12px;
-    padding: 16px;
-    margin-top: 8px;
-    font-size: 12px;
-  }
-  .summary-title {
-    font-size: 11px; font-family: var(--font-mono);
-    color: var(--gray-dim); text-transform: uppercase;
-    letter-spacing: 0.08em; margin-bottom: 12px;
-    display: flex; align-items: center; gap: 6px;
-  }
+  .summary-card { background: var(--surface); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 16px; margin-top: 8px; font-size: 12px; }
+  .summary-title { font-size: 11px; font-family: var(--font-mono); color: var(--gray-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
   .summary-title::after { content:''; flex:1; height:1px; background:var(--border); }
-  .summary-row {
-    display: flex; gap: 10px; margin-bottom: 8px; align-items: flex-start;
-  }
-  .s-label {
-    color: var(--gray-dim); min-width: 80px; font-size: 11.5px;
-  }
+  .summary-row { display: flex; gap: 10px; margin-bottom: 8px; align-items: flex-start; }
+  .s-label { color: var(--gray-dim); min-width: 80px; font-size: 11.5px; }
   .s-val { color: #fff; font-size: 12.5px; line-height: 1.5; }
-  .s-tag {
-    display: inline-block;
-    background: rgba(46,204,113,0.12);
-    border: 1px solid rgba(46,204,113,0.3);
-    color: var(--green);
-    border-radius: 4px; padding: 1px 7px;
-    font-size: 11px; font-family: var(--font-mono);
-    margin-right: 4px;
-  }
-  .s-tag.urgent {
-    background: rgba(232,68,90,0.12);
-    border-color: rgba(232,68,90,0.3);
-    color: #ff6a80;
-  }
+  .s-tag { display: inline-block; background: rgba(46,204,113,0.12); border: 1px solid rgba(46,204,113,0.3); color: var(--green); border-radius: 4px; padding: 1px 7px; font-size: 11px; font-family: var(--font-mono); margin-right: 4px; }
+  .s-tag.urgent { background: rgba(232,68,90,0.12); border-color: rgba(232,68,90,0.3); color: #ff6a80; }
   .summary-divider { height: 1px; background: var(--border); margin: 10px 0; }
 
-  /* 打字動畫 */
-  .typing-wrap { display: flex; align-items: center; gap: 8px; padding: 8px 0; }
-  .typing-dots { display: flex; gap: 4px; }
-  .typing-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--blue-light);
-    animation: typingBlink 1.2s infinite;
-  }
+  .typing-dots { display: flex; gap: 4px; padding: 4px 2px; }
+  .typing-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue-light); animation: typingBlink 1.2s infinite; }
   .typing-dot:nth-child(2) { animation-delay: 0.2s; }
   .typing-dot:nth-child(3) { animation-delay: 0.4s; }
   @keyframes typingBlink { 0%,80%,100%{opacity:0.15} 40%{opacity:1} }
 
-  /* ── 輸入區 ── */
-  .input-area {
-    padding: 12px 24px 16px;
-    border-top: 1px solid var(--border);
-    background: var(--blue-dark);
-  }
-  .input-row {
-    display: flex; gap: 10px; align-items: center;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 8px 8px 8px 16px;
-    transition: border-color 0.2s;
-  }
+  .input-area { padding: 12px 24px 16px; border-top: 1px solid var(--border); background: var(--blue-dark); }
+  .input-row { display: flex; gap: 10px; align-items: center; background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 8px 8px 8px 16px; transition: border-color 0.2s; }
   .input-row:focus-within { border-color: rgba(58,142,245,0.5); }
-  .input-row input {
-    flex: 1; background: transparent; border: none; outline: none;
-    font-family: var(--font-main);
-    font-size: 13px; color: #fff;
-  }
+  .input-row input { flex: 1; background: transparent; border: none; outline: none; font-family: var(--font-main); font-size: 13px; color: #fff; }
   .input-row input::placeholder { color: var(--gray-dim); }
-  .send-btn {
-    width: 36px; height: 36px;
-    background: var(--blue-accent);
-    border: none; border-radius: 8px;
-    color: #fff; font-size: 16px;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.15s, transform 0.1s;
-  }
+  .send-btn { width: 36px; height: 36px; background: var(--blue-accent); border: none; border-radius: 8px; color: #fff; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s, transform 0.1s; }
   .send-btn:hover { background: var(--blue-light); }
   .send-btn:active { transform: scale(0.94); }
-  .reset-btn {
-    padding: 6px 14px; background: transparent;
-    border: 1px solid var(--border); border-radius: 8px;
-    color: var(--gray-dim); font-size: 12px; font-family: var(--font-main);
-    cursor: pointer; transition: all 0.15s;
-  }
+  .send-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .reset-btn { padding: 6px 14px; background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--gray-dim); font-size: 12px; font-family: var(--font-main); cursor: pointer; transition: all 0.15s; }
   .reset-btn:hover { border-color: rgba(232,68,90,0.5); color: #ff6a80; }
+  .hint-text { font-size: 11px; color: var(--gray-dim); text-align: center; margin-top: 8px; }
 
-  .hint-text {
-    font-size: 11px; color: var(--gray-dim);
-    text-align: center; margin-top: 8px;
-  }
+  .ai-badge { display: inline-flex; align-items: center; gap: 5px; background: linear-gradient(135deg,rgba(26,111,212,0.2),rgba(15,168,144,0.2)); border: 1px solid rgba(58,142,245,0.3); border-radius: 20px; padding: 3px 10px; font-size: 10px; font-family: var(--font-mono); color: #5aaeff; margin-bottom: 6px; }
 
-  /* 報修單按鈕 */
-  .report-btn {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: rgba(245,166,35,0.1);
-    border: 1px solid rgba(245,166,35,0.35);
-    color: var(--amber);
-    border-radius: 8px; padding: 8px 16px;
-    font-size: 12.5px; font-family: var(--font-main);
-    cursor: pointer; margin-top: 10px; transition: all 0.15s;
-  }
-  .report-btn:hover { background: rgba(245,166,35,0.2); }
-
-  /* 列印/匯出彈窗 */
-  .modal-overlay {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.65);
-    z-index: 100;
-    align-items: center; justify-content: center;
-  }
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 100; align-items: center; justify-content: center; }
   .modal-overlay.show { display: flex; }
-  .modal {
-    background: var(--blue-mid);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 16px;
-    padding: 24px;
-    width: 480px;
-    max-width: 95vw;
-    animation: fadeUp 0.2s ease;
-  }
+  .modal { background: var(--blue-mid); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 24px; width: 480px; max-width: 95vw; animation: fadeUp 0.2s ease; max-height: 90vh; overflow-y: auto; }
   .modal-title { font-size: 14px; font-weight: 500; color: #fff; margin-bottom: 4px; }
   .modal-sub { font-size: 12px; color: var(--gray-dim); margin-bottom: 16px; }
-  .modal-report {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    line-height: 1.8;
-    color: var(--gray-text);
-    white-space: pre-wrap;
-    max-height: 240px;
-    overflow-y: auto;
-  }
+  .modal-report { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px; font-family: var(--font-mono); font-size: 12px; line-height: 1.8; color: var(--gray-text); white-space: pre-wrap; max-height: 200px; overflow-y: auto; }
   .modal-actions { display: flex; gap: 8px; margin-top: 14px; justify-content: flex-end; }
-  .btn-copy {
-    background: var(--blue-accent); border: none;
-    color: #fff; border-radius: 8px; padding: 8px 18px;
-    font-size: 13px; font-family: var(--font-main);
-    cursor: pointer; transition: background 0.15s;
-  }
+  .btn-copy { background: var(--blue-accent); border: none; color: #fff; border-radius: 8px; padding: 8px 18px; font-size: 13px; font-family: var(--font-main); cursor: pointer; transition: background 0.15s; }
   .btn-copy:hover { background: var(--blue-light); }
-  .btn-close {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--gray-dim); border-radius: 8px;
-    padding: 8px 18px; font-size: 13px;
-    font-family: var(--font-main); cursor: pointer;
-  }
+  .btn-close { background: transparent; border: 1px solid var(--border); color: var(--gray-dim); border-radius: 8px; padding: 8px 18px; font-size: 13px; font-family: var(--font-main); cursor: pointer; }
 
-  /* 聯絡資訊表單 */
   .contact-form { margin-top: 14px; }
-  .contact-form-title {
-    font-size: 11px; font-family: var(--font-mono);
-    color: var(--gray-dim); text-transform: uppercase;
-    letter-spacing: 0.08em; margin-bottom: 10px;
-    display: flex; align-items: center; gap: 6px;
-  }
+  .contact-form-title { font-size: 11px; font-family: var(--font-mono); color: var(--gray-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
   .contact-form-title::after { content:''; flex:1; height:1px; background:var(--border); }
   .form-row { display: flex; gap: 8px; margin-bottom: 8px; }
   .form-field { flex: 1; display: flex; flex-direction: column; gap: 4px; }
   .form-field label { font-size: 11px; color: var(--gray-dim); }
-  .form-field input {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 7px 11px;
-    font-size: 13px;
-    font-family: var(--font-main);
-    color: #fff;
-    outline: none;
-    transition: border-color 0.2s;
-  }
+  .form-field input { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 7px 11px; font-size: 13px; font-family: var(--font-main); color: #fff; outline: none; transition: border-color 0.2s; }
   .form-field input:focus { border-color: rgba(58,142,245,0.5); }
   .form-field input::placeholder { color: var(--gray-dim); font-size: 12px; }
-
-  .btn-send {
-    background: linear-gradient(135deg, var(--teal), var(--blue-accent));
-    border: none; color: #fff; border-radius: 8px;
-    padding: 8px 20px; font-size: 13px;
-    font-family: var(--font-main); cursor: pointer;
-    display: flex; align-items: center; gap: 6px;
-    transition: opacity 0.15s;
-  }
+  .btn-send { background: linear-gradient(135deg, var(--teal), var(--blue-accent)); border: none; color: #fff; border-radius: 8px; padding: 8px 20px; font-size: 13px; font-family: var(--font-main); cursor: pointer; display: flex; align-items: center; gap: 6px; transition: opacity 0.15s; }
   .btn-send:hover { opacity: 0.88; }
   .btn-send:disabled { opacity: 0.45; cursor: not-allowed; }
-
-  .send-status {
-    font-size: 12px; padding: 6px 10px;
-    border-radius: 6px; display: none; margin-top: 8px;
-  }
+  .send-status { font-size: 12px; padding: 6px 10px; border-radius: 6px; display: none; margin-top: 8px; }
   .send-status.ok { background: rgba(46,204,113,0.12); border: 1px solid rgba(46,204,113,0.3); color: var(--green); display: block; }
   .send-status.err { background: rgba(232,68,90,0.12); border: 1px solid rgba(232,68,90,0.3); color: #ff6a80; display: block; }
 
-  /* 意見回饋彈窗 */
   .feedback-stars { display: flex; gap: 8px; margin: 12px 0; }
-  .star-btn {
-    font-size: 28px; background: none; border: none;
-    cursor: pointer; opacity: 0.35; transition: opacity 0.15s, transform 0.1s;
-    line-height: 1;
-  }
+  .star-btn { font-size: 28px; background: none; border: none; cursor: pointer; opacity: 0.35; transition: opacity 0.15s, transform 0.1s; line-height: 1; }
   .star-btn:hover, .star-btn.active { opacity: 1; transform: scale(1.15); }
-  .feedback-textarea {
-    width: 100%; background: var(--surface);
-    border: 1px solid var(--border); border-radius: 8px;
-    padding: 10px 12px; font-size: 13px;
-    font-family: var(--font-main); color: #fff;
-    resize: vertical; min-height: 72px; outline: none;
-    transition: border-color 0.2s;
-  }
-  .feedback-textarea:focus { border-color: rgba(58,142,245,0.5); }
+  .feedback-textarea { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; font-size: 13px; font-family: var(--font-main); color: #fff; resize: vertical; min-height: 72px; outline: none; }
   .feedback-textarea::placeholder { color: var(--gray-dim); }
-  .btn-feedback-send {
-    background: var(--teal); border: none; color: #fff;
-    border-radius: 8px; padding: 8px 20px;
-    font-size: 13px; font-family: var(--font-main);
-    cursor: pointer; transition: opacity 0.15s;
-  }
-  .btn-feedback-send:hover { opacity: 0.85; }
+  .btn-feedback-send { background: var(--teal); border: none; color: #fff; border-radius: 8px; padding: 8px 20px; font-size: 13px; font-family: var(--font-main); cursor: pointer; }
 
-  @media(max-width:600px){
-    .sidebar { display: none; }
-    .chat-messages { padding: 16px 14px 8px; }
-    .input-area { padding: 10px 14px 14px; }
-  }
+  @media(max-width:600px){ .sidebar { display: none; } .chat-messages { padding: 16px 14px 8px; } .input-area { padding: 10px 14px 14px; } }
 </style>
 </head>
 <body>
@@ -488,94 +147,68 @@
   <div class="header-icon">📡</div>
   <div>
     <h1>通信障礙智慧報修助理</h1>
-    <p>AI 互動式故障排除系統 · 第一階段原型</p>
+    <p>AI 互動式故障排除系統 · 第二階段</p>
   </div>
   <div class="header-badge">
     <div class="status-dot"></div>
-    ONLINE
+    AI ONLINE
   </div>
 </header>
 
 <div class="main">
-  <!-- 左側：快捷故障選單 -->
   <nav class="sidebar" id="sidebar">
     <div class="sidebar-section">網路類障礙</div>
-    <div class="sidebar-item" onclick="quickFault('net_down')">
-      <span class="icon">🔴</span>
-      <span>網路斷線</span>
-      <span class="fault-cat cat-net">NET</span>
+    <div class="sidebar-item" onclick="quickFault('網路完全斷線，無法上網')">
+      <span class="icon">🔴</span><span>網路斷線</span><span class="fault-cat cat-net">NET</span>
     </div>
-    <div class="sidebar-item" onclick="quickFault('net_slow')">
-      <span class="icon">🟡</span>
-      <span>網速異常</span>
-      <span class="fault-cat cat-net">NET</span>
+    <div class="sidebar-item" onclick="quickFault('網路速度很慢，網速異常')">
+      <span class="icon">🟡</span><span>網速異常</span><span class="fault-cat cat-net">NET</span>
     </div>
-    <div class="sidebar-item" onclick="quickFault('net_flap')">
-      <span class="icon">🟠</span>
-      <span>網路瞬斷</span>
-      <span class="fault-cat cat-net">NET</span>
+    <div class="sidebar-item" onclick="quickFault('網路一直瞬斷，不穩定')">
+      <span class="icon">🟠</span><span>網路瞬斷</span><span class="fault-cat cat-net">NET</span>
     </div>
-    <div class="sidebar-item" onclick="quickFault('net_noip')">
-      <span class="icon">🔵</span>
-      <span>燈正常但無法上網</span>
-      <span class="fault-cat cat-net">NET</span>
+    <div class="sidebar-item" onclick="quickFault('數據機燈號正常但無法上網')">
+      <span class="icon">🔵</span><span>燈正常但無法上網</span><span class="fault-cat cat-net">NET</span>
     </div>
-    <div class="sidebar-item" onclick="quickFault('net_page')">
-      <span class="icon">🌐</span>
-      <span>特定網頁無法開啟</span>
-      <span class="fault-cat cat-net">NET</span>
+    <div class="sidebar-item" onclick="quickFault('特定網頁無法開啟')">
+      <span class="icon">🌐</span><span>特定網頁無法開啟</span><span class="fault-cat cat-net">NET</span>
     </div>
-    <div class="sidebar-item" onclick="quickFault('wifi_fail')">
-      <span class="icon">📶</span>
-      <span>Wi-Fi 無法連線</span>
-      <span class="fault-cat cat-net">NET</span>
+    <div class="sidebar-item" onclick="quickFault('Wi-Fi無法連線')">
+      <span class="icon">📶</span><span>Wi-Fi 無法連線</span><span class="fault-cat cat-net">NET</span>
     </div>
     <div class="sidebar-divider"></div>
     <div class="sidebar-section">市話類障礙</div>
-    <div class="sidebar-item" onclick="quickFault('tel_nodial')">
-      <span class="icon">☎️</span>
-      <span>無撥號音或雜音</span>
-      <span class="fault-cat cat-tel">TEL</span>
+    <div class="sidebar-item" onclick="quickFault('市話沒有撥號音或有雜音')">
+      <span class="icon">☎️</span><span>無撥號音或雜音</span><span class="fault-cat cat-tel">TEL</span>
     </div>
-    <div class="sidebar-item" onclick="quickFault('tel_inonly')">
-      <span class="icon">📞</span>
-      <span>可撥出無法撥入</span>
-      <span class="fault-cat cat-tel">TEL</span>
+    <div class="sidebar-item" onclick="quickFault('電話可以撥出但無法撥入')">
+      <span class="icon">📞</span><span>可撥出無法撥入</span><span class="fault-cat cat-tel">TEL</span>
     </div>
-    <div class="sidebar-item" onclick="quickFault('tel_drop')">
-      <span class="icon">📵</span>
-      <span>響一聲就斷</span>
-      <span class="fault-cat cat-tel">TEL</span>
+    <div class="sidebar-item" onclick="quickFault('電話響一聲就斷線')">
+      <span class="icon">📵</span><span>響一聲就斷</span><span class="fault-cat cat-tel">TEL</span>
     </div>
     <div class="sidebar-divider"></div>
     <div class="sidebar-section">MOD 類障礙</div>
-    <div class="sidebar-item" onclick="quickFault('mod_fail')">
-      <span class="icon">📺</span>
-      <span>MOD 連線失敗</span>
-      <span class="fault-cat cat-mod">MOD</span>
+    <div class="sidebar-item" onclick="quickFault('MOD機上盒網路連線失敗')">
+      <span class="icon">📺</span><span>MOD 連線失敗</span><span class="fault-cat cat-mod">MOD</span>
     </div>
-    <div class="sidebar-item" onclick="quickFault('mod_dhcp')">
-      <span class="icon">🔧</span>
-      <span>MOD 路由失敗</span>
-      <span class="fault-cat cat-mod">MOD</span>
+    <div class="sidebar-item" onclick="quickFault('MOD出現DHCP路由失敗錯誤')">
+      <span class="icon">🔧</span><span>MOD 路由失敗</span><span class="fault-cat cat-mod">MOD</span>
     </div>
-    <div class="sidebar-item" onclick="quickFault('mod_mosaic')">
-      <span class="icon">🟫</span>
-      <span>MOD 馬賽克</span>
-      <span class="fault-cat cat-mod">MOD</span>
+    <div class="sidebar-item" onclick="quickFault('MOD電視畫面出現馬賽克')">
+      <span class="icon">🟫</span><span>MOD 馬賽克</span><span class="fault-cat cat-mod">MOD</span>
     </div>
   </nav>
 
-  <!-- 聊天主體 -->
   <div class="chat-area">
     <div class="chat-messages" id="chat"></div>
     <div class="input-area">
       <div class="input-row">
-        <input id="inp" type="text" placeholder="請輸入您的問題，或點選左側快捷選項..." onkeydown="if(event.key==='Enter')sendMsg()">
+        <input id="inp" type="text" placeholder="請用自己的話描述問題，例如：網路突然斷了..." onkeydown="if(event.key==='Enter' && !isWaiting)sendMsg()">
         <button class="reset-btn" onclick="resetChat()">重置</button>
-        <button class="send-btn" onclick="sendMsg()" title="送出">➤</button>
+        <button class="send-btn" id="send-btn" onclick="sendMsg()" title="送出">➤</button>
       </div>
-      <div class="hint-text">⚠️ 本系統為第一階段原型，故障判斷依據預設邏輯，僅供參考。</div>
+      <div class="hint-text">✨ 第二階段：由 Claude AI 即時分析您的問題並動態引導排查</div>
     </div>
   </div>
 </div>
@@ -610,8 +243,6 @@
   <div class="modal">
     <div class="modal-title">📋 工程師查修摘要 · 寄送報修單</div>
     <div class="modal-sub">請填寫聯絡資訊，系統將自動寄出報修單至修護單位</div>
-
-    <!-- 聯絡資訊表單 -->
     <div class="contact-form">
       <div class="contact-form-title">👤 用戶聯絡資訊</div>
       <div class="form-row">
@@ -631,15 +262,11 @@
         </div>
       </div>
     </div>
-
-    <!-- 摘要預覽 -->
     <div style="margin-top:12px;">
       <div class="contact-form-title">📄 報修摘要預覽</div>
       <div class="modal-report" id="report-content"></div>
     </div>
-
     <div id="send-status" class="send-status"></div>
-
     <div class="modal-actions">
       <button class="btn-close" onclick="closeModal()">關閉</button>
       <button class="btn-copy" onclick="copyReport()">📋 複製</button>
@@ -649,785 +276,234 @@
 </div>
 
 <script>
-// ────────────────────────────────────────────
-// 故障資料庫（12種障礙 + 完整排障步驟）
-// ────────────────────────────────────────────
-const FAULTS = {
-  net_down: {
-    label: '網路完全斷線',
-    badgeClass: 'badge-net',
-    badgeText: '🔴 障礙類別：網路完全斷線',
-    steps: [
-      {
-        q: '收到，我來協助您排查。請先看一下<strong>數據機</strong>（黑色或白色盒子），<strong>電源燈</strong>有亮嗎？',
-        opts: ['有亮，綠色正常', '有亮但是紅色或一直閃', '完全沒有任何燈']
-      },
-      {
-        q: '請看數據機上標有 <strong>WAN</strong> 或 <strong>網路</strong> 的指示燈，它是什麼狀態？',
-        opts: ['綠燈常亮', '紅燈或燈在閃爍', '完全沒有這個燈']
-      },
-      {
-        q: '網路燈異常，可能是線路問題。請確認從<strong>牆壁插孔到數據機</strong>的那條線，有沒有拔鬆或看起來受損？',
-        opts: ['接線正常，重插後依然沒網路', '發現鬆脫，重插後改善了！', '線路外皮有破損']
-      }
-    ],
-    results: [
-      { text: '電源問題，請確認電源線與插座狀態，或嘗試換一個插座', tag: '用戶端', user_msg: '您的電源線或插座可能有問題，請嘗試換一個插座或確認電源線是否插好，通常可自行處理。' },
-      { text: '線路品質問題或外線障礙，建議派工檢測 ONT 及外線品質', tag: '派工', user_msg: '經初步排查，判斷為外線或數據機異常，需要安排工程師到府檢修，請填寫報修資料，我們將盡快派員處理。' },
-      { text: '問題已自行排除，接線鬆脫所致', tag: '用戶端', user_msg: '問題為網路線鬆脫，重新插緊後已恢復，若再次發生請更換網路線。' }
-    ],
+// ── 設定 ──
+const WORKER_URL = 'https://telecom-ai-proxy.pangtz1022.workers.dev';
 
-    resultRules: [
-      { keywords: ['完全沒有任何燈'], idx: 0 },          // 電源問題
-      { keywords: ['紅燈','閃爍','依然沒網路','仍然沒','還是沒','重插後依然'], idx: 1 }, // 派工
-      { keywords: ['改善了','插緊後改善'], idx: 2 },      // 自行排除
-    ],
-    summary: { type:'網路完全斷線', layer:'實體層 / WAN 連線異常', suspect:'ONT 數據機 WAN 燈異常或外線中斷', action:'派工檢測外線及 ONT 設備' }
-  },
-
-  net_slow: {
-    label: '網速異常（速度緩慢）',
-    badgeClass: 'badge-net',
-    badgeText: '🟡 障礙類別：網速異常',
-    steps: [
-      {
-        q: '瞭解，網速慢有多種原因。請問是<strong>所有裝置</strong>都慢，還是<strong>只有某台</strong>裝置慢？',
-        opts: ['全部裝置都慢', '只有某一台裝置慢']
-      },
-      {
-        q: '全部裝置都慢，問題可能在線路或數據機端。請問數據機已經多久沒有重新開機了？',
-        opts: ['超過一週以上', '幾天沒重開', '剛才才重新開機過']
-      },
-      {
-        q: '建議先將數據機<strong>關機等待 30 秒</strong>，再開機，等候約 2 分鐘。請問測速結果如何？',
-        opts: ['有改善，速度回正常了', '還是一樣很慢']
-      }
-    ],
-    results: [
-      { text: '單一裝置問題，請清除該裝置快取或更新網路驅動程式', tag: '用戶端', user_msg: '問題僅出現在單一裝置，建議清除該裝置的網路快取或更新驅動程式，不需要報修。' },
-      { text: '重開機後改善，可能為設備暫時性問題，建議觀察', tag: '觀察中', user_msg: '數據機重新開機後速度已恢復，屬暫時性問題，請持續觀察，若頻繁發生請再回報。' },
-      { text: '重開後仍慢，建議遠端查詢線路 SNR 值，必要時安排到場測速', tag: '派工', user_msg: '數據機重開後速度仍未改善，可能為線路品質問題，需要安排工程師到場測速，請填寫報修資料。' }
-    ],
-
-    resultRules: [
-      { keywords: ['只有某一台'], idx: 0 },               // 單裝置問題
-      { keywords: ['有改善','速度回正常'], idx: 1 },      // 重開後改善
-      { keywords: ['還是一樣很慢','仍慢','重開後仍'], idx: 2 }, // 派工
-    ],
-    summary: { type:'網速異常（緩慢）', layer:'傳輸層 / 應用層', suspect:'線路 SNR 偏低或 ISP 節點壅塞，亦可能為用戶端裝置問題', action:'遠端檢視線路品質報告，確認 xDSL 數據' }
-  },
-
-  net_flap: {
-    label: '網路瞬斷不穩定',
-    badgeClass: 'badge-warn',
-    badgeText: '🟠 障礙類別：網路瞬斷 / 不穩定',
-    steps: [
-      {
-        q: '網路一直掉線重連，非常困擾。請問大約多久斷一次線？',
-        opts: ['幾分鐘就斷一次', '幾小時斷一次', '不固定，沒有規律']
-      },
-      {
-        q: '掉線的時候，請注意數據機上的<strong>網路燈（WAN燈）</strong>，燈號有沒有跟著閃爍或熄滅？',
-        opts: ['有，燈號會閃動或暗掉', '沒有，燈號一直正常亮但還是斷線']
-      },
-      {
-        q: '數據機附近是否有<strong>大型電器設備</strong>（微波爐、電磁爐、無線電話基座）？',
-        opts: ['有，而且距離很近', '沒有，附近沒有這類電器']
-      }
-    ],
-    results: [
-      { text: '燈號異常 → 外線訊號不穩，建議派工攜帶測試儀到場量測 xDSL 線路品質', tag: '派工', user_msg: '數據機燈號異常，判斷為外線訊號不穩定，需要工程師攜帶測試儀到場檢修，請填寫報修資料。' },
-      { text: '燈號正常但仍斷線 → 可能為路由器或 DHCP 問題，建議更換路由器測試', tag: '用戶端', user_msg: '燈號正常但仍斷線，問題可能出在您的路由器，建議先嘗試更換路由器，或請專業人員協助設定。' },
-      { text: '電磁干擾嫌疑，請將數據機移離電器，或改用有線網路測試', tag: '用戶端', user_msg: '附近電器可能干擾網路訊號，請將數據機移離微波爐等電器至少 30 公分，或改用有線網路。' }
-    ],
-
-    resultRules: [
-      { keywords: ['燈號會閃','燈號異常','暗掉'], idx: 0 }, // 派工
-      { keywords: ['燈號一直正常','燈都正常'], idx: 1 },   // 路由器問題
-      { keywords: ['有，而且距離'], idx: 2 },              // 電磁干擾
-    ],
-    summary: { type:'網路瞬斷 / 不穩定', layer:'資料鏈結層 / 實體層', suspect:'xDSL 線路 SNR 值偏低、外線干擾或電磁干擾', action:'攜帶 DSLAM 測試儀到場量測線路品質' }
-  },
-
-  net_noip: {
-    label: '燈號正常但無法上網',
-    badgeClass: 'badge-net',
-    badgeText: '🔵 障礙類別：數據機燈正常但無法上網',
-    steps: [
-      {
-        q: '數據機所有燈都正常亮，但電腦或手機就是無法上網。請問您的裝置顯示的是什麼錯誤訊息？',
-        opts: ['顯示「無法連線到 DNS」或類似訊息', '顯示「無 IP 位址」或「DHCP 失敗」', '沒有錯誤訊息，只是打不開網頁']
-      },
-      {
-        q: '請試著在電腦執行<strong>「重新整理網路」</strong>（Windows：ipconfig /renew，Mac：重新連接網路），有任何改變嗎？',
-        opts: ['有改善，可以上網了', '沒有改變，還是無法上網']
-      },
-      {
-        q: '請嘗試用手機熱點測試：將電腦改連手機熱點，是否可以上網？',
-        opts: ['改用手機熱點可以上網（問題在路由器/數據機）', '手機熱點也不行（問題在電腦本身）']
-      }
-    ],
-    results: [
-      { text: 'DNS 問題，請在網路設定中將 DNS 改為 8.8.8.8（Google）或 1.1.1.1（Cloudflare）', tag: '用戶端', user_msg: '您的裝置 DNS 設定異常，請至網路設定將 DNS 改為 8.8.8.8，通常可自行完成，不需報修。' },
-      { text: '問題已排除，DHCP 重新取得 IP 後恢復正常', tag: '觀察中', user_msg: '重新整理網路後已恢復正常，屬暫時性 IP 取得失敗，請持續觀察，若再次發生請回報。' },
-      { text: '路由器/數據機 DHCP 異常，建議重開設備或恢復出廠設定', tag: '用戶端', user_msg: '路由器或數據機的 DHCP 功能異常，建議恢復出廠設定，或請工程師協助重新設定。' }
-    ],
-
-    resultRules: [
-      { keywords: ['DNS','無法連線到'], idx: 0 },         // DNS問題
-      { keywords: ['有改善，可以上網'], idx: 1 },         // 已排除
-      { keywords: ['手機熱點可以','問題在路由','手機熱點也不行','問題在電腦'], idx: 2 }, // DHCP異常
-    ],
-    summary: { type:'數據機燈號正常但無法上網', layer:'網路層 / DNS', suspect:'用戶端 IP 取得失敗（DHCP）或 DNS 解析異常', action:'確認 DHCP 分配狀態，必要時遠端查看路由設定' }
-  },
-
-  net_page: {
-    label: '特定網頁無法開啟',
-    badgeClass: 'badge-net',
-    badgeText: '🌐 障礙類別：特定網頁無法開啟',
-    steps: [
-      {
-        q: '是特定的網頁打不開。請問是<strong>所有網頁</strong>都打不開，還是只有<strong>特定幾個網站</strong>打不開？',
-        opts: ['只有少數特定網站打不開', '大部分網站都打不開', '只有某一個網站']
-      },
-      {
-        q: '請試著更換瀏覽器（例如從 Chrome 改用 Edge 或 Firefox），問題是否消失？',
-        opts: ['換瀏覽器後可以開啟了', '換了瀏覽器還是一樣打不開']
-      },
-      {
-        q: '請試著用<strong>手機4G（關閉Wi-Fi）</strong>開啟同一個網頁，結果如何？',
-        opts: ['手機4G可以開，代表是網路問題', '手機4G也打不開，代表是那個網站本身的問題']
-      }
-    ],
-    results: [
-      { text: '瀏覽器快取問題，請清除瀏覽器快取後再試', tag: '用戶端', user_msg: '問題為瀏覽器快取，請清除快取後重新開啟網頁，可自行處理，不需報修。' },
-      { text: '網路DNS或路由問題，請嘗試更換DNS為 8.8.8.8', tag: '用戶端', user_msg: '網路 DNS 設定有問題，請將 DNS 改為 8.8.8.8（Google），步驟可上網搜尋「更改DNS設定」。' },
-      { text: '目標網站本身故障，非您的網路問題，請等待對方修復', tag: '非本端問題', user_msg: '您的網路沒有問題，是目標網站本身發生故障，請等待對方網站修復，無需報修。' }
-    ],
-
-    resultRules: [
-      { keywords: ['換瀏覽器後可以'], idx: 0 },           // 快取問題
-      { keywords: ['換了瀏覽器還是','手機4G可以開'], idx: 1 }, // DNS/路由
-      { keywords: ['手機4G也打不開','網站本身'], idx: 2 }, // 網站本身故障
-    ],
-    summary: { type:'特定網頁無法開啟', layer:'應用層 / DNS 解析', suspect:'DNS 快取污染、瀏覽器快取或目標網站障礙', action:'遠端確認 DNS 解析是否正常，或通知用戶清除快取' }
-  },
-
-  wifi_fail: {
-    label: 'Wi-Fi 無法連線',
-    badgeClass: 'badge-net',
-    badgeText: '📶 障礙類別：Wi-Fi 無法連線 / AP 失聯',
-    steps: [
-      {
-        q: 'Wi-Fi 連線問題。請問是完全找不到您家的 Wi-Fi 訊號，還是找得到但連不上？',
-        opts: ['完全找不到Wi-Fi（消失了）', '找得到訊號但連不上', '連上了但沒有網路']
-      },
-      {
-        q: '請確認 Wi-Fi 分享器（路由器）的<strong>電源燈和Wi-Fi燈</strong>是否都有正常亮？',
-        opts: ['都有亮，綠燈正常', 'Wi-Fi燈沒有亮或在閃', '電源燈也沒有亮']
-      },
-      {
-        q: '請試著將路由器<strong>重新開機</strong>（拔電源 30 秒後再插上），等 2 分鐘後再試，有改善嗎？',
-        opts: ['重開後 Wi-Fi 恢復正常了', '還是連不上，沒有改善']
-      }
-    ],
-    results: [
-      { text: 'Wi-Fi 訊號消失，可能為路由器當機或 Wi-Fi 功能異常，建議更換設備測試', tag: '用戶端', user_msg: 'Wi-Fi 訊號消失，可能是路由器當機，建議先嘗試更換備用路由器；若無備用設備請通知維修人員。' },
-      { text: '重開後恢復，為路由器暫時性當機，建議觀察是否再發生', tag: '觀察中', user_msg: '路由器重新開機後 Wi-Fi 已恢復正常，屬暫時性當機，請持續觀察，若頻繁發生建議更換設備。' },
-      { text: '重開仍無法改善，可能為路由器硬體故障或設定異常，建議恢復出廠設定', tag: '用戶端', user_msg: '路由器重開後仍無法連線，可能需要更換路由器或恢復出廠設定，建議由工程師協助處理。' }
-    ],
-
-    resultRules: [
-      { keywords: ['完全找不到','Wi-Fi（消失了）'], idx: 0 }, // 訊號消失
-      { keywords: ['重開後','恢復正常了'], idx: 1 },       // 重開改善
-      { keywords: ['還是連不上','沒有改善'], idx: 2 },     // 持續無法改善
-    ],
-    summary: { type:'Wi-Fi 無法連線', layer:'資料鏈結層 / 無線網路', suspect:'無線路由器當機、Wi-Fi 模組異常或頻道衝突', action:'建議到場確認 AP 設定或進行設備更換' }
-  },
-
-  tel_nodial: {
-    label: '市話無撥號音或雜音',
-    badgeClass: 'badge-tel',
-    badgeText: '☎️ 障礙類別：市話無撥號音 / 雜音',
-    steps: [
-      {
-        q: '市話出現問題。請先確認<strong>電話線是否插緊</strong>（電話機到牆壁插座兩端都要確認）？',
-        opts: ['已確認兩端都插緊，還是沒有撥號音', '重新插緊後，有撥號音了！', '電話線外皮有破損']
-      },
-      {
-        q: '您家是否有<strong>多台分機</strong>？如果有，其他分機是否也有相同問題？',
-        opts: ['只有一台電話', '其他分機也沒有撥號音', '其他分機正常，只有這台有問題']
-      },
-      {
-        q: '問題只在單台電話。請試著換一台電話機插在同一個插座，是否有撥號音？',
-        opts: ['換電話機後有撥號音（原來電話機壞了）', '換電話機也沒有（問題在線路）']
-      }
-    ],
-    results: [
-      { text: '線路問題，建議派工檢測 MDF 至用戶端的市話線路', tag: '派工', user_msg: '市話線路異常，需要工程師到場檢測從機房到您家的線路，請填寫報修資料，我們將安排派工。' },
-      { text: '問題已自行排除，線路接觸不良所致', tag: '用戶端', user_msg: '電話線重新插緊後已恢復正常，問題為接觸不良，若再次發生請更換電話線。' },
-      { text: '電話機本身故障，建議更換電話機', tag: '用戶端', user_msg: '電話機本身已損壞，建議購買新的電話機更換，線路無問題，不需報修。' }
-    ],
-
-    resultRules: [
-      { keywords: ['其他分機也沒','所有分機','還是沒有撥號音'], idx: 0 }, // 線路問題→派工
-      { keywords: ['重新插緊後','插緊後，有撥號音'], idx: 1 }, // 自行排除
-      { keywords: ['換電話機後有','換電話機也沒'], idx: 2 }, // 電話機問題
-    ],
-    summary: { type:'市話無撥號音 / 雜音', layer:'實體層 / POTS 線路', suspect:'總線路異常、分線盒接觸不良或電話機故障', action:'派工檢測 MDF 至用戶端市話線路品質' }
-  },
-
-  tel_inonly: {
-    label: '電話可撥出無法撥入',
-    badgeClass: 'badge-tel',
-    badgeText: '📞 障礙類別：可撥出但無法撥入',
-    steps: [
-      {
-        q: '可以撥出電話但別人打不進來。請問對方打您家電話時，他聽到的是什麼？',
-        opts: ['對方聽到忙線音（嘟嘟嘟）', '對方聽到無此號碼', '對方聽到一直響但沒人接']
-      },
-      {
-        q: '您的電話機有沒有開啟<strong>勿擾模式</strong>或<strong>來電過濾</strong>功能？',
-        opts: ['有，剛才關掉後可以接了', '沒有，都沒有開這些功能']
-      },
-      {
-        q: '請試著用別人的手機撥您家電話，是否能接通？',
-        opts: ['可以接通，問題可能是特定號碼被封鎖', '完全打不進來，可能是線路問題']
-      }
-    ],
-    results: [
-      { text: '忙線音 → 電話線路佔線或局端設定問題，建議聯絡電信確認帳號狀態', tag: '局端', user_msg: '對方撥入時聽到忙線音，可能是局端設定問題，需要通報電信公司確認帳號狀態，請填寫報修資料。' },
-      { text: '電話機設定問題，已自行排除', tag: '用戶端', user_msg: '電話機的勿擾或靜音功能被誤觸，已關閉後恢復正常，不需報修。' },
-      { text: '特定號碼封鎖問題，建議確認來電封鎖名單', tag: '用戶端', user_msg: '可能為特定號碼被封鎖，請至電話設定確認來電封鎖名單，可自行處理，不需報修。' }
-    ],
-
-    resultRules: [
-      { keywords: ['忙線音','嘟嘟嘟'], idx: 0 },          // 局端問題
-      { keywords: ['勿擾','靜音','有，剛才關掉'], idx: 1 }, // 設定問題
-      { keywords: ['可以接通','封鎖'], idx: 2 },           // 封鎖問題
-    ],
-    summary: { type:'電話可撥出無法撥入', layer:'應用層 / 市話交換', suspect:'局端路由設定異常、電話機勿擾功能或來電封鎖', action:'確認局端帳號狀態及來電路由設定' }
-  },
-
-  tel_drop: {
-    label: '電話響一聲就斷',
-    badgeClass: 'badge-tel',
-    badgeText: '📵 障礙類別：市話響一聲就斷',
-    steps: [
-      {
-        q: '電話只響一聲就斷，這通常是特定設定造成的。請問您家電話有沒有接<strong>答錄機</strong>或類似設備？',
-        opts: ['有接答錄機', '沒有答錄機']
-      },
-      {
-        q: '請確認電話機上是否有<strong>「拒接」或「靜音」功能鍵</strong>被誤觸？',
-        opts: ['有發現，已解除，問題改善了', '沒有，按鍵都正常']
-      },
-      {
-        q: '問題仍未解決。請問您有沒有申請過<strong>「來電轉接」或「鈴聲設定」</strong>服務？',
-        opts: ['有申請來電轉接', '沒有申請任何附加服務']
-      }
-    ],
-    results: [
-      { text: '答錄機靈敏度過高，建議調整答錄機鈴響次數（設定為 3 聲以上才接）', tag: '用戶端', user_msg: '答錄機搶在電話響第一聲就接聽，請將答錄機設定為響 3 聲以上再接，可自行調整，不需報修。' },
-      { text: '電話機設定問題，已自行排除', tag: '用戶端', user_msg: '電話機的勿擾或靜音功能被誤觸，已關閉後恢復正常，不需報修。' },
-      { text: '來電轉接設定異常，建議聯絡電信取消或重新設定轉接服務', tag: '局端', user_msg: '來電轉接服務設定異常導致電話響一聲即被轉走，需要通報電信公司重新設定，請填寫報修資料。' }
-    ],
-
-    resultRules: [
-      { keywords: ['答錄機'], idx: 0 },                   // 答錄機問題
-      { keywords: ['已解除','問題改善'], idx: 0 },         // 按鍵誤觸已排除
-      { keywords: ['來電轉接','附加服務'], idx: 2 },       // 轉接設定
-    ],
-    summary: { type:'市話響一聲就斷', layer:'應用層 / 市話附加服務', suspect:'答錄機搶線、來電轉接設定異常或電話機按鍵誤觸', action:'確認局端附加服務設定及答錄機設定' }
-  },
-
-  mod_fail: {
-    label: 'MOD 網路連線失敗',
-    badgeClass: 'badge-mod',
-    badgeText: '📺 障礙類別：MOD 網路連線失敗',
-    steps: [
-      {
-        q: 'MOD 無法連線。開機後畫面顯示的是什麼錯誤訊息？',
-        opts: ['顯示「網路連線失敗」或錯誤代碼', '畫面完全黑屏，沒有任何顯示', '顯示「正在搜尋中」但一直轉圈']
-      },
-      {
-        q: '請確認 MOD 機上盒的<strong>網路燈</strong>（通常是 LAN 或 ETH 燈）是否有亮？',
-        opts: ['有亮，網路燈正常', '沒有亮，或是紅燈']
-      },
-      {
-        q: '請試著重新開機 MOD 機上盒（拔電源等 30 秒），開機後等待 3 分鐘，有改善嗎？',
-        opts: ['重開後 MOD 正常了', '還是無法連線']
-      }
-    ],
-    results: [
-      { text: '重開後恢復，為機上盒暫時性當機，建議觀察', tag: '觀察中', user_msg: 'MOD 機上盒重新開機後已恢復正常，屬暫時性當機，請持續觀察，若頻繁發生請再回報。' },
-      { text: '網路燈異常，可能為 LAN 線未接妥或數據機問題，請確認 MOD 與數據機的連線', tag: '用戶端', user_msg: 'MOD 機上盒網路燈異常，請確認連接數據機的網路線是否插緊，若重插後仍無法連線請填寫報修資料。' },
-      { text: 'MOD 持續無法連線，建議派工到場確認機上盒狀態及訊號品質', tag: '派工', user_msg: 'MOD 機上盒重開後仍無法連線，需要工程師到場確認設備狀態，請填寫報修資料，我們將安排派工。' }
-    ],
-
-    resultRules: [
-      { keywords: ['重開後 MOD 正常','重新開機後正常'], idx: 0 }, // 暫時當機
-      { keywords: ['網路燈','沒有亮','紅燈'], idx: 1 },    // 網路燈異常
-      { keywords: ['還是無法連線','仍然無法'], idx: 2 },   // 持續無法→派工
-    ],
-    summary: { type:'MOD 網路連線失敗', layer:'網路層 / MOD 服務', suspect:'MOD 機上盒 IP 取得失敗或 IPTV 服務端異常', action:'派工確認機上盒設定及 IPTV 訊號品質' }
-  },
-
-  mod_dhcp: {
-    label: 'MOD 路由（DHCP）失敗',
-    badgeClass: 'badge-mod',
-    badgeText: '🔧 障礙類別：MOD 路由 / DHCP 失敗',
-    steps: [
-      {
-        q: 'MOD 出現 DHCP 相關錯誤。請問您最近有沒有<strong>更換路由器</strong>或<strong>調整網路設定</strong>？',
-        opts: ['有，最近換了新的路由器', '有調整過設定', '都沒有動過']
-      },
-      {
-        q: '請確認 MOD 機上盒是直接連接<strong>數據機</strong>，還是透過<strong>路由器</strong>連接？',
-        opts: ['直接連接數據機（沒有路由器）', '透過路由器連接']
-      },
-      {
-        q: '請嘗試將 MOD 改為<strong>直接連接數據機</strong>（繞過路由器），是否能正常連線？',
-        opts: ['直接連數據機可以，問題在路由器設定', '直接連也不行，問題在數據機或線路']
-      }
-    ],
-    results: [
-      { text: '路由器設定問題（可能為雙重 NAT 或 DHCP 衝突），建議調整路由器為橋接模式（Bridge Mode）', tag: '用戶端', user_msg: '您的路由器設定與 MOD 發生衝突，需要將路由器調整為橋接模式，建議由工程師或熟悉網路設定的人員協助。' },
-      { text: '數據機 DHCP 功能異常，建議派工到場重新設定或更換數據機', tag: '派工', user_msg: '數據機 DHCP 功能異常，需要工程師到場重新設定或更換數據機，請填寫報修資料。' },
-      { text: '設定問題已自行調整，建議觀察是否穩定', tag: '觀察中', user_msg: '設定調整後已恢復正常，請持續觀察是否穩定，若再次發生請填寫報修資料。' }
-    ],
-
-    resultRules: [
-      { keywords: ['直接連數據機可以','問題在路由器'], idx: 0 }, // 路由器設定
-      { keywords: ['直接連也不行'], idx: 1 },              // 數據機問題→派工
-      { keywords: ['已自行調整','設定後可以'], idx: 2 },   // 已排除
-    ],
-    summary: { type:'MOD 路由 DHCP 失敗', layer:'網路層 / DHCP', suspect:'路由器雙重 NAT 衝突或數據機 DHCP 模組異常', action:'遠端確認路由設定，建議調整為橋接模式' }
-  },
-
-  mod_mosaic: {
-    label: 'MOD 畫面馬賽克',
-    badgeClass: 'badge-mod',
-    badgeText: '🟫 障礙類別：MOD 畫面馬賽克 / 畫質異常',
-    steps: [
-      {
-        q: 'MOD 出現馬賽克畫面。請問是<strong>所有頻道</strong>都有馬賽克，還是只有<strong>特定幾個頻道</strong>？',
-        opts: ['所有頻道都有馬賽克', '只有某幾個頻道有', '只有特定時間才有']
-      },
-      {
-        q: '請確認 MOD 機上盒到電視的<strong>HDMI線或訊號線</strong>是否有鬆脫？',
-        opts: ['重新插緊後改善了', '線路沒問題，還是有馬賽克']
-      },
-      {
-        q: '請查看數據機上的<strong>訊號燈或錯誤燈</strong>，是否有任何異常？同時，馬賽克是否在尖峰時段（晚上7-11點）特別嚴重？',
-        opts: ['尖峰時段特別嚴重，其他時間還好', '任何時間都有馬賽克']
-      }
-    ],
-    results: [
-      { text: 'HDMI 線接觸不良，已自行排除', tag: '用戶端', user_msg: 'HDMI 線接觸不良重新插緊後畫質已恢復正常，若再次發生建議更換 HDMI 線。' },
-      { text: '尖峰壅塞問題，建議聯絡 ISP 確認節點頻寬', tag: '局端', user_msg: '馬賽克集中在尖峰時段，屬網路壅塞問題，需要通報電信公司確認節點頻寬，請填寫報修資料。' },
-      { text: '訊號品質不足（SNR 過低），建議派工到場量測 MOD 收訊品質', tag: '派工', user_msg: '訊號品質不足導致畫面馬賽克，需要工程師攜帶測試儀到場量測訊號品質，請填寫報修資料。' }
-    ],
-
-    resultRules: [
-      { keywords: ['重新插緊後改善','HDMI'], idx: 0 },     // HDMI問題
-      { keywords: ['尖峰時段特別嚴重'], idx: 1 },          // 壅塞→局端
-      { keywords: ['任何時間都有','一直有'], idx: 2 },     // 訊號不足→派工
-    ],
-    summary: { type:'MOD 畫面馬賽克', layer:'實體層 / 訊號品質', suspect:'接收訊號 SNR 值偏低、線路品質不足或尖峰壅塞', action:'攜帶訊號測試儀到場量測 MOD 訊號品質（SNR、BER）' }
-  }
-};
-
-// ────────────────────────────────────────────
-// 聊天狀態
-// ────────────────────────────────────────────
-let state = {
-  flow: null,
-  step: 0,
-  answers: [],
-  finished: false
-};
+// ── 狀態 ──
+let conversationHistory = [];
+let isWaiting = false;
 let lastSummary = null;
+let summaryData = {};
 
-// ────────────────────────────────────────────
-// 初始化
-// ────────────────────────────────────────────
-function init() {
-  const chat = document.getElementById('chat');
-  chat.innerHTML = '';
-  state = { flow: null, step: 0, answers: [], finished: false };
-  lastSummary = null;
-  addBotMsg(
-    '您好！我是<strong>通信障礙排除助理</strong>。<br><br>' +
-    '請用自己的話告訴我問題，或從左側選擇故障類型，我會一步步引導您排查。',
-    [
-      { label: '📡 網路完全斷線', key: 'net_down' },
-      { label: '🐌 網速很慢', key: 'net_slow' },
-      { label: '📶 Wi-Fi 連不上', key: 'wifi_fail' },
-      { label: '☎️ 市話沒撥號音', key: 'tel_nodial' },
-      { label: '📺 MOD 無法收看', key: 'mod_fail' },
-    ]
-  );
-}
-
-// ────────────────────────────────────────────
-// DOM 操作
-// ────────────────────────────────────────────
-function addBotMsg(html, quickOpts) {
-  const chat = document.getElementById('chat');
-  const wrap = document.createElement('div');
-  wrap.className = 'msg-wrap bot';
-  wrap.innerHTML = `
-    <div class="avatar bot-av">AI</div>
-    <div class="bubble-wrap">
-      <div class="bubble bot-bubble">${html}</div>
-      ${quickOpts ? buildQuickBtns(quickOpts) : ''}
-    </div>`;
-  chat.appendChild(wrap);
-  chat.scrollTop = chat.scrollHeight;
-}
+// ── DOM 工具 ──
+const chat = document.getElementById('chat');
 
 function addUserMsg(text) {
-  const chat = document.getElementById('chat');
-  const wrap = document.createElement('div');
-  wrap.className = 'msg-wrap user';
-  wrap.innerHTML = `
-    <div class="avatar user-av">我</div>
-    <div class="bubble-wrap">
-      <div class="bubble user-bubble">${text}</div>
-    </div>`;
-  chat.appendChild(wrap);
+  const d = document.createElement('div');
+  d.className = 'msg-wrap user';
+  d.innerHTML = `<div class="avatar user-av">我</div><div class="bubble-wrap"><div class="bubble user-bubble">${escHtml(text)}</div></div>`;
+  chat.appendChild(d);
   chat.scrollTop = chat.scrollHeight;
 }
 
-function buildQuickBtns(opts) {
-  const btns = opts.map(o => {
-    const key = o.key ? `onclick="quickFault('${o.key}')"` : `onclick="answerStep('${o.label}')"`;
-    return `<button class="qbtn" ${key}>${o.label}</button>`;
-  }).join('');
-  return `<div class="quick-btns">${btns}</div>`;
-}
-
-function showTyping(callback) {
-  const chat = document.getElementById('chat');
-  const t = document.createElement('div');
-  t.className = 'msg-wrap bot'; t.id = 'typing';
-  t.innerHTML = `<div class="avatar bot-av">AI</div>
-    <div class="bubble-wrap"><div class="bubble bot-bubble">
-      <div class="typing-dots">
-        <div class="typing-dot"></div>
-        <div class="typing-dot"></div>
-        <div class="typing-dot"></div>
-      </div>
-    </div></div>`;
-  chat.appendChild(t);
+function addBotMsg(html, opts) {
+  const d = document.createElement('div');
+  d.className = 'msg-wrap bot';
+  let optHtml = '';
+  if (opts && opts.length) {
+    optHtml = '<div class="quick-btns">' + opts.map(o => `<button class="qbtn" onclick="handleOption('${escAttr(o)}')">${escHtml(o)}</button>`).join('') + '</div>';
+  }
+  d.innerHTML = `<div class="avatar bot-av">AI</div><div class="bubble-wrap"><div class="bubble bot-bubble"><div class="ai-badge">✦ Claude AI</div>${html}</div>${optHtml}</div>`;
+  chat.appendChild(d);
   chat.scrollTop = chat.scrollHeight;
-  setTimeout(() => { t.remove(); callback(); }, 750);
+  return d;
 }
 
-// ────────────────────────────────────────────
-// 邏輯流程
-// ────────────────────────────────────────────
-function sendMsg() {
-  const inp = document.getElementById('inp');
-  const text = inp.value.trim();
-  if (!text) return;
-  inp.value = '';
-  handleUserInput(text);
+function showTypingIndicator() {
+  const d = document.createElement('div');
+  d.className = 'msg-wrap bot'; d.id = 'typing-ind';
+  d.innerHTML = `<div class="avatar bot-av">AI</div><div class="bubble-wrap"><div class="bubble bot-bubble"><div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div></div>`;
+  chat.appendChild(d);
+  chat.scrollTop = chat.scrollHeight;
+}
+function hideTypingIndicator() {
+  const t = document.getElementById('typing-ind');
+  if (t) t.remove();
 }
 
-function handleUserInput(text) {
-  addUserMsg(text);
-  if (state.finished) {
-    showTyping(() => addBotMsg(
-      '排查已完成。如果您還有其他問題，可以點選左側重新選擇故障類型，或點「重置」開始新的對話。',
-      [
-        { label: '🔄 重新排查', key: '__reset__' },
-        { label: '📋 再次查看報修單', key: '__modal__' }
-      ]
-    ));
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function escAttr(s) { return String(s).replace(/'/g,'&#39;').replace(/"/g,'&quot;'); }
+
+// ── 呼叫 AI ──
+async function callAI(userMessage) {
+  conversationHistory.push({ role: 'user', content: userMessage });
+
+  isWaiting = true;
+  document.getElementById('send-btn').disabled = true;
+  showTypingIndicator();
+
+  try {
+    const res = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: conversationHistory })
+    });
+
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+
+    if (data.error) throw new Error(data.error.message || 'API 錯誤');
+
+    const fullText = data.content.map(b => b.text || '').join('');
+    conversationHistory.push({ role: 'assistant', content: fullText });
+
+    hideTypingIndicator();
+    processAIResponse(fullText);
+
+  } catch (err) {
+    hideTypingIndicator();
+    addBotMsg(`⚠️ 連線發生問題（${err.message}），請稍後再試。`, ['🔄 重新開始']);
+  } finally {
+    isWaiting = false;
+    document.getElementById('send-btn').disabled = false;
+  }
+}
+
+// ── 解析 AI 回應 ──
+function processAIResponse(text) {
+  // 檢查是否包含摘要
+  if (text.includes('===SUMMARY_START===') && text.includes('===SUMMARY_END===')) {
+    const summaryRaw = text.match(/===SUMMARY_START===([\s\S]*?)===SUMMARY_END===/)?.[1] || '';
+    const beforeSummary = text.split('===SUMMARY_START===')[0].trim();
+
+    // 解析摘要欄位
+    summaryData = {};
+    summaryRaw.split('\n').forEach(line => {
+      const [key, ...vals] = line.split('：');
+      if (key && vals.length) summaryData[key.trim()] = vals.join('：').trim();
+    });
+
+    const reportTime = new Date().toLocaleString('zh-TW');
+    const answerLog = conversationHistory
+      .filter(m => m.role === 'user')
+      .map((m, i) => `  步驟${i+1}：${m.content}`)
+      .join('\n');
+
+    lastSummary = `===== 通信障礙查修摘要 =====
+報告時間：${reportTime}
+障礙類型：${summaryData['障礙類型'] || '—'}
+問題層級：${summaryData['問題層級'] || '—'}
+疑似原因：${summaryData['疑似原因'] || '—'}
+建議處置：${summaryData['建議處置'] || '—'}
+權責判斷：${summaryData['權責判斷'] || '—'}
+
+─── 對話排障紀錄 ───
+${answerLog}
+
+本摘要由通信障礙智慧報修助理（AI）自動生成。`;
+
+    // 顯示排查前的最後對話
+    if (beforeSummary) addBotMsg(beforeSummary.replace(/\n/g,'<br>'), null);
+
+    // 顯示摘要卡片
+    setTimeout(() => showSummaryCard(), 300);
     return;
   }
 
-  if (state.flow) {
-    showTyping(() => processStep(text));
-  } else {
-    showTyping(() => detectFault(text));
-  }
-}
+  // 一般回應：解析 OPTIONS
+  let mainText = text;
+  let opts = [];
 
-function quickFault(key) {
-  const f = FAULTS[key];
-  if (!f) return;
-  addUserMsg(f.label);
-  showTyping(() => startFlow(key));
-}
-
-function answerStep(label) {
-  handleUserInput(label);
-}
-
-function detectFault(text) {
-  const lower = text;
-  let matched = null;
-  if (lower.includes('斷線') || lower.includes('連不上') || lower.includes('沒網路')) matched = 'net_down';
-  else if (lower.includes('慢') || lower.includes('速度')) matched = 'net_slow';
-  else if (lower.includes('瞬斷') || lower.includes('不穩') || lower.includes('斷一直')) matched = 'net_flap';
-  else if (lower.includes('燈正常') || lower.includes('燈都亮') || lower.includes('打不開網頁') && lower.includes('燈')) matched = 'net_noip';
-  else if (lower.includes('網頁') || lower.includes('打不開') || lower.includes('某個網站')) matched = 'net_page';
-  else if (lower.includes('wifi') || lower.includes('Wi-Fi') || lower.includes('無線') || lower.includes('AP')) matched = 'wifi_fail';
-  else if ((lower.includes('市話') || lower.includes('電話')) && (lower.includes('雜音') || lower.includes('沒聲') || lower.includes('撥號'))) matched = 'tel_nodial';
-  else if (lower.includes('撥入') || lower.includes('打不進')) matched = 'tel_inonly';
-  else if (lower.includes('響一聲') || lower.includes('就斷')) matched = 'tel_drop';
-  else if (lower.includes('MOD') || lower.includes('mod') || lower.includes('機上盒')) {
-    if (lower.includes('馬賽克') || lower.includes('畫質')) matched = 'mod_mosaic';
-    else if (lower.includes('DHCP') || lower.includes('路由')) matched = 'mod_dhcp';
-    else matched = 'mod_fail';
+  if (text.includes('OPTIONS:')) {
+    const parts = text.split('OPTIONS:');
+    mainText = parts[0].trim();
+    opts = parts[1].trim().split('|').map(s => s.trim()).filter(Boolean);
   }
 
-  if (matched) {
-    startFlow(matched);
-  } else {
-    addBotMsg(
-      '我理解您遇到了問題。能更具體說明嗎？或直接選擇最接近的類型：',
-      [
-        { label: '📡 網路完全斷線', key: 'net_down' },
-        { label: '🐌 網速很慢', key: 'net_slow' },
-        { label: '🔄 網路一直斷', key: 'net_flap' },
-        { label: '☎️ 市話問題', key: 'tel_nodial' },
-        { label: '📺 MOD/電視問題', key: 'mod_fail' },
-      ]
-    );
-  }
+  addBotMsg(mainText.replace(/\n/g, '<br>'), opts);
 }
 
-function startFlow(key) {
-  const f = FAULTS[key];
-  state.flow = key;
-  state.step = 0;
-  state.answers = [];
-  state.finished = false;
+// ── 顯示摘要卡片 ──
+function showSummaryCard() {
+  const sd = summaryData;
+  const needDispatch = ['派工','局端'].includes(sd['權責判斷']);
+  const tagClass = needDispatch ? 'urgent' : '';
+  const tagColor = needDispatch ? '#ff6a80' : sd['權責判斷'] === '觀察中' ? '#f5c46a' : '#3dd6be';
 
-  // 更新側邊欄 active
-  document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
-  const items = document.querySelectorAll('.sidebar-item');
-  items.forEach(item => {
-    if (item.getAttribute('onclick') === `quickFault('${key}')`) item.classList.add('active');
-  });
-
-  const progress = buildProgress(0, f.steps.length);
-  const badge = `<div class="classify-badge ${f.badgeClass}">${f.badgeText}</div>`;
-  addBotMsg(badge + progress + f.steps[0].q, f.steps[0].opts.map(o => ({ label: o })));
-}
-
-// ── 判斷用戶是否在「問問題」而非回答 ──
-function isQuestion(text) {
-  const questionWords = ['哪裡', '在哪', '什麼', '怎麼', '如何', '為什麼', '為何', '請問', '不知道', '看不到', '找不到', '沒看到', '不懂', '不清楚', '幫我', '告訴我', '說明', '解釋', '？', '?'];
-  return questionWords.some(w => text.includes(w));
-}
-
-// ── 根據目前步驟給出補充說明 ──
-function getContextualHelp(flowKey, stepIdx, question) {
-  const helpMap = {
-    // 網路斷線
-    net_down: [
-      '數據機通常是放在家中網路入口的黑色或白色小盒子，上面有多個指示燈。<strong>電源燈</strong>一般標示為「PWR」或電源符號⏻，正常時應為綠色常亮。',
-      '<strong>WAN 燈</strong>通常標示為「WAN」、「Internet」或地球圖示🌐，代表對外連線狀態。紅燈或閃爍表示訊號異常。',
-      '從牆壁插孔出來的那條線叫做<strong>電話線（DSL線）</strong>，請追蹤那條線確認兩端都插緊，線身沒有折損或壓到。'
-    ],
-    net_slow: [
-      '您可以用手機開啟「fast.com」或「speedtest.net」網頁來測試目前的網路速度，再與您申辦的方案速度比較。',
-      '數據機重新開機方式：找到數據機的電源線，從插座拔掉，等待 <strong>30 秒</strong>後再插上，等待約 <strong>2 分鐘</strong>讓它重新連線後再測速。',
-      '測速方式：手機關閉行動數據，連上家裡 Wi-Fi 後，開啟瀏覽器前往「fast.com」，頁面會自動開始測速。'
-    ],
-    net_flap: [
-      '掉線頻率可以這樣判斷：觀察數據機的 WAN 燈，每次燈閃或熄滅就代表一次掉線。記錄幾次的間隔時間即可。',
-      '<strong>WAN 燈</strong>位置請參考數據機正面，通常在電源燈旁邊，標示「WAN」或地球圖示。掉線瞬間燈會閃爍或短暫熄滅。',
-      '常見的電磁干擾來源包括：微波爐、無線電話底座（非手機）、藍牙喇叭等。數據機建議離這些電器<strong>至少 30 公分</strong>以上。'
-    ],
-    wifi_fail: [
-      'Wi-Fi 名稱（SSID）通常印在路由器底部貼紙上，格式類似「ASUS_XX」或「TP-Link_XX」。請確認您搜尋的 Wi-Fi 名稱與貼紙相符。',
-      '路由器上的燈號：<strong>電源燈</strong>應綠色常亮；<strong>Wi-Fi 燈</strong>標示為無線訊號符號📶，正常時應亮著或緩慢閃爍。',
-      '重新開機步驟：將路由器電源線從插座拔除，等 <strong>30 秒</strong>後插回，等待 <strong>2 分鐘</strong>讓設備重新啟動完成。'
-    ],
-    tel_nodial: [
-      '電話線插孔通常在電話機底部或背面，標示「LINE」或電話符號☎️。請確認電話線兩端（電話機端與牆壁端）都有確實插緊。',
-      '分機是指家裡接在不同房間的電話，共用同一條外線。您可以拿起各房間的電話聽是否有撥號音來判斷。',
-      '測試方式：找另一台電話機（或向鄰居借），插在同一個牆壁插孔，若有撥號音代表線路正常，原來電話機可能故障。'
-    ],
-    mod_fail: [
-      'MOD 機上盒的網路燈通常在正面，標示「LAN」或「ETH」，正常時應為<strong>綠色常亮</strong>。若沒有亮，表示網路線未連通。',
-      'MOD 機上盒重新開機：找到機上盒背面或側面的電源線，拔掉後等 <strong>30 秒</strong>，再插回，等待約 <strong>3 分鐘</strong>讓系統重新啟動。',
-      '確認 MOD 是否有正常連線：開機後畫面出現「中華電信 MOD」開機畫面，然後進入頻道選單，表示連線成功。'
-    ],
-    mod_mosaic: [
-      '馬賽克判斷方式：如果畫面出現方塊狀模糊、畫面停格、或聲音正常但影像破碎，就是馬賽克現象，代表訊號不足。',
-      'HDMI 線通常在機上盒背面，是扁平梯形接頭，連接到電視。請拔掉後重新插緊，有時接觸不良就會造成畫質異常。',
-      '尖峰時段通常為晚上 7 點到 11 點，此時段使用者最多，若只有這段時間有馬賽克，通常是網路壅塞造成，非設備故障。'
-    ]
-  };
-
-  const steps = helpMap[flowKey];
-  if (steps && steps[stepIdx]) return steps[stepIdx];
-  return null;
-}
-
-function processStep(answer) {
-  const f = FAULTS[state.flow];
-
-  // ── 偵測是否為問題（而非回答選項）──
-  if (isQuestion(answer)) {
-    const help = getContextualHelp(state.flow, state.step, answer);
-    if (help) {
-      const currentStep = f.steps[state.step];
-      addBotMsg(
-        `💡 ${help}<br><br>了解後，請繼續回答上面的問題：<br><strong>${currentStep.q}</strong>`,
-        currentStep.opts.map(o => ({ label: o }))
-      );
-    } else {
-      const currentStep = f.steps[state.step];
-      addBotMsg(
-        `這個問題我目前沒有更多說明，建議您可以拍下設備照片或直接聯繫客服詢問。<br><br>請繼續回答：<strong>${currentStep.q}</strong>`,
-        currentStep.opts.map(o => ({ label: o }))
-      );
-    }
-    return; // 不推進步驟
-  }
-
-  // ── 正常回答，推進步驟 ──
-  state.answers.push(answer);
-  state.step++;
-
-  if (state.step < f.steps.length) {
-    const progress = buildProgress(state.step, f.steps.length);
-    addBotMsg(progress + f.steps[state.step].q, f.steps[state.step].opts.map(o => ({ label: o })));
-  } else {
-    showResult();
-  }
-}
-
-function buildProgress(current, total) {
-  const pct = Math.round((current / total) * 100);
-  return `<div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
-          <div class="progress-label">排查進度 ${current}/${total}</div>`;
-}
-
-function showResult() {
-  const f = FAULTS[state.flow];
-  state.finished = true;
-
-  // 根據最後一個回答選對應結果（簡易對應）
-  // ── 用答案關鍵字比對正確結果，而非用索引 ──
-  const allAnswers = state.answers.join('|');
-  let res = f.results[f.results.length - 1]; // 預設最後一條
-
-  // 優先找最精確的匹配規則
-  if (f.resultRules) {
-    for (const rule of f.resultRules) {
-      if (rule.keywords.some(kw => allAnswers.includes(kw))) {
-        res = f.results[rule.idx];
-        break;
-      }
-    }
-  }
-  const s = f.summary;
-
-  const reportTime = new Date().toLocaleString('zh-TW');
-  const answerLog = state.answers.map((a, i) => `  步驟${i+1}：${a}`).join('\n');
-
-  lastSummary = `===== 通信障礙查修摘要 =====
-報告時間：${reportTime}
-障礙類型：${s.type}
-問題層級：${s.layer}
-疑似原因：${s.suspect}
-建議處置：${s.action}
-
-─── 用戶排障紀錄 ───
-${answerLog}
-
-─── 初判建議 ───
-${res.text}
-【${res.tag}】
-
-本摘要由通信障礙智慧報修助理自動生成。
-`;
-
-  const html = `
-    <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
-    <div class="progress-label">排查進度 完成 ✓</div>
-    排查完成！以下是本次障礙的初步分析：
+  const cardHtml = `排查完成！以下是本次障礙的 AI 分析結果：
     <div class="summary-card">
-      <div class="summary-title">🔍 查修摘要</div>
-      <div class="summary-row">
-        <span class="s-label">障礙類型</span>
-        <span class="s-val">${s.type}</span>
-      </div>
-      <div class="summary-row">
-        <span class="s-label">問題層級</span>
-        <span class="s-val">${s.layer}</span>
-      </div>
-      <div class="summary-row">
-        <span class="s-label">疑似原因</span>
-        <span class="s-val">${s.suspect}</span>
-      </div>
+      <div class="summary-title">🔍 AI 查修摘要</div>
+      <div class="summary-row"><span class="s-label">障礙類型</span><span class="s-val">${sd['障礙類型']||'—'}</span></div>
+      <div class="summary-row"><span class="s-label">問題層級</span><span class="s-val">${sd['問題層級']||'—'}</span></div>
+      <div class="summary-row"><span class="s-label">疑似原因</span><span class="s-val">${sd['疑似原因']||'—'}</span></div>
       <div class="summary-divider"></div>
-      <div class="summary-row">
-        <span class="s-label">初判建議</span>
-        <span class="s-val"><span class="s-tag ${res.tag==='派工'?'urgent':''}">${res.tag}</span>${res.text}</span>
-      </div>
-      <div class="summary-row">
-        <span class="s-label">建議處置</span>
-        <span class="s-val">${s.action}</span>
-      </div>
-    </div>
-  `;
-
-  const needDispatch = res.tag === '派工' || res.tag === '局端';
-  const userMsg = res.user_msg || res.text;
-
-  // ── 用戶看到的：簡短說明氣泡 ──
-  const tagColor = needDispatch ? '#ff6a80' : res.tag === '觀察中' ? '#f5c46a' : '#3dd6be';
-  const tagIcon  = needDispatch ? '🔧' : res.tag === '觀察中' ? '👀' : '✅';
-  const userHtml = `
-    <div style="background:var(--surface);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 16px;margin-top:6px;">
-      <div style="font-size:11px;font-family:var(--font-mono);color:var(--gray-dim);margin-bottom:8px;letter-spacing:0.06em;">
-        ${tagIcon} 給您的說明
-      </div>
-      <div style="font-size:14px;line-height:1.7;color:#fff;">${userMsg}</div>
-      <div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.06);font-size:11px;color:var(--gray-dim);">
-        狀態：<span style="color:${tagColor};font-weight:500;">${res.tag}</span>
-      </div>
+      <div class="summary-row"><span class="s-label">建議處置</span><span class="s-val">${sd['建議處置']||'—'}</span></div>
+      <div class="summary-row"><span class="s-label">權責判斷</span><span class="s-val"><span class="s-tag ${tagClass}">${sd['權責判斷']||'—'}</span></span></div>
     </div>`;
+  addBotMsg(cardHtml, null);
 
-  addBotMsg(html, null);
-
-  // 延遲顯示用戶簡短說明
-  setTimeout(() => { addBotMsg(userHtml, null); }, 500);
-
-  // 再延遲顯示後續操作按鈕
+  // 給用戶的簡短說明
   setTimeout(() => {
-    if (needDispatch) {
-      addBotMsg(
-        '需要工程師到場處理，請點下方按鈕填寫聯絡資訊，系統將自動送出報修單。',
-        [{ label: '🔧 立即填寫報修單', key: '__modal__' },
-         { label: '🔄 重新排查', key: '__reset__' }]
-      );
-    } else {
-      addBotMsg(
-        '請問上述說明有幫助到您嗎？',
-        [{ label: '✅ 問題已解決！', key: '__feedback__' },
-         { label: '❌ 問題仍未解決，需要報修', key: '__modal__' },
-         { label: '🔄 重新排查其他問題', key: '__reset__' }]
-      );
-    }
-  }, 1100);
+    const userMsg = sd['給用戶說明'] || sd['建議處置'] || '排查已完成。';
+    const userCardHtml = `<div style="background:var(--surface);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 16px;margin-top:4px;">
+      <div style="font-size:11px;font-family:var(--font-mono);color:var(--gray-dim);margin-bottom:8px;">${needDispatch?'🔧':'✅'} 給您的說明</div>
+      <div style="font-size:14px;line-height:1.7;color:#fff;">${userMsg}</div>
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.06);font-size:11px;color:var(--gray-dim);">狀態：<span style="color:${tagColor};font-weight:500;">${sd['權責判斷']||'—'}</span></div>
+    </div>`;
+    addBotMsg(userCardHtml, null);
+
+    // 後續按鈕
+    setTimeout(() => {
+      if (needDispatch) {
+        addBotMsg('需要工程師到場處理，請點下方按鈕填寫聯絡資訊，系統將自動送出報修單。',
+          ['🔧 立即填寫報修單 __modal__', '🔄 重新排查 __reset__']);
+      } else {
+        addBotMsg('請問上述說明有幫助到您嗎？',
+          ['✅ 問題已解決！ __feedback__', '❌ 問題仍未解決，需要報修 __modal__', '🔄 重新排查其他問題 __reset__']);
+      }
+    }, 500);
+  }, 400);
 }
 
-function showModal() {
-  if (!lastSummary) return;
+// ── 輸入處理 ──
+function sendMsg() {
+  const inp = document.getElementById('inp');
+  const text = inp.value.trim();
+  if (!text || isWaiting) return;
+  inp.value = '';
+  addUserMsg(text);
+  callAI(text);
+}
+
+function handleOption(label) {
+  if (label.includes('__reset__')) { resetChat(); return; }
+  if (label.includes('__modal__')) { openModal(); return; }
+  if (label.includes('__feedback__')) { openFeedback(); return; }
+  // 移除特殊標記後送出
+  const clean = label.replace(/__\w+__/g,'').trim();
+  addUserMsg(clean);
+  callAI(clean);
+}
+
+function quickFault(text) {
+  addUserMsg(text);
+  callAI(text);
+}
+
+// ── 初始化 ──
+function init() {
+  chat.innerHTML = '';
+  conversationHistory = [];
+  isWaiting = false;
+  lastSummary = null;
+  summaryData = {};
+  document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+  addBotMsg(
+    '您好！我是您的 <strong>AI 通信障礙助理</strong>，由 Claude 提供服務。🤖<br><br>請用自己的話描述遇到的問題，我會根據您的狀況動態引導排查，不需要按固定步驟。',
+    ['📡 網路完全斷線', '🐌 網路速度很慢', '📶 Wi-Fi 連不上', '☎️ 市話有問題', '📺 MOD 無法使用']
+  );
+}
+
+function resetChat() { init(); }
+
+// ── 報修單 ──
+function openModal() {
+  if (!lastSummary) {
+    addBotMsg('請先完成障礙排查再填寫報修單。', null);
+    return;
+  }
   document.getElementById('report-content').textContent = lastSummary;
   document.getElementById('send-status').className = 'send-status';
-  document.getElementById('send-status').textContent = '';
   document.getElementById('btn-send').disabled = false;
   document.getElementById('btn-send').textContent = '✉️ 送出報修單';
   document.getElementById('modal').classList.add('show');
@@ -1440,102 +516,69 @@ function copyReport() {
     setTimeout(() => { btn.textContent = '📋 複製'; }, 2000);
   });
 }
-
 async function sendEmail() {
   const name  = document.getElementById('f-name').value.trim();
   const phone = document.getElementById('f-phone').value.trim();
   const addr  = document.getElementById('f-addr').value.trim();
   const status = document.getElementById('send-status');
   const btn = document.getElementById('btn-send');
-
   if (!name || !phone || !addr) {
     status.className = 'send-status err';
     status.textContent = '⚠️ 請填寫姓名、聯絡電話及裝機地址後再送出。';
     return;
   }
-
-  btn.disabled = true;
-  btn.textContent = '⏳ 寄送中...';
+  btn.disabled = true; btn.textContent = '⏳ 寄送中...';
   status.className = 'send-status';
-
-  const f = FAULTS[state.flow] || {};
-  const s = f.summary || {};
   const reportTime = new Date().toLocaleString('zh-TW');
-
-  const templateParams = {
-    report_time:    reportTime,
-    fault_type:     s.type  || '未知',
-    fault_layer:    s.layer || '未知',
-    fault_suspect:  s.suspect || '未知',
-    fault_action:   s.action || '未知',
-    user_name:      name,
-    user_phone:     phone,
-    user_address:   addr,
-    report_content: lastSummary
-  };
-
   try {
-    await emailjs.send('service_28kkr0q', 'template_p1fa0p7', templateParams);
+    await emailjs.send('service_28kkr0q', 'template_p1fa0p7', {
+      report_time: reportTime,
+      fault_type: summaryData['障礙類型'] || '未知',
+      fault_layer: summaryData['問題層級'] || '未知',
+      fault_suspect: summaryData['疑似原因'] || '未知',
+      fault_action: summaryData['建議處置'] || '未知',
+      user_name: name, user_phone: phone, user_address: addr,
+      report_content: lastSummary
+    });
     status.className = 'send-status ok';
     status.textContent = '✅ 報修單已成功寄出！修護單位將盡快與您聯繫。';
     btn.textContent = '✓ 已送出';
   } catch (err) {
     status.className = 'send-status err';
-    status.textContent = `❌ 寄送失敗（${err.text || err.message || '請檢查網路連線'}），請複製摘要後手動聯繫。`;
-    btn.disabled = false;
-    btn.textContent = '✉️ 重新送出';
+    status.textContent = `❌ 寄送失敗（${err.text || err.message}），請複製摘要後手動聯繫。`;
+    btn.disabled = false; btn.textContent = '✉️ 重新送出';
   }
 }
 
-function resetChat() { init(); }
-
-// 點選「重置」快捷
-
-
 // ── 意見回饋 ──
 let feedbackRating = 0;
-
+function openFeedback() {
+  feedbackRating = 0;
+  document.querySelectorAll('.star-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('fb-comment').value = '';
+  document.getElementById('fb-status').className = 'send-status';
+  document.getElementById('feedback-modal').classList.add('show');
+}
+function closeFeedback() {
+  document.getElementById('feedback-modal').classList.remove('show');
+  addBotMsg('感謝您的使用！如有其他問題歡迎隨時回來查詢。', ['🔄 重新開始 __reset__']);
+}
 function rateStar(val) {
   feedbackRating = val;
   document.querySelectorAll('.star-btn').forEach(btn => {
     btn.classList.toggle('active', parseInt(btn.dataset.val) <= val);
   });
 }
-
-function closeFeedback() {
-  document.getElementById('feedback-modal').classList.remove('show');
-  showTyping(() => addBotMsg('沒問題，感謝您的使用！如有其他問題歡迎隨時回來查詢。', [{ label: '🔄 重新開始', key: '__reset__' }]));
-}
-
 function submitFeedback() {
   if (!feedbackRating) {
     const s = document.getElementById('fb-status');
     s.className = 'send-status err'; s.textContent = '⚠️ 請先選擇評分星數。'; return;
   }
-  const comment = document.getElementById('fb-comment').value.trim();
   const stars = '★'.repeat(feedbackRating) + '☆'.repeat(5 - feedbackRating);
+  const comment = document.getElementById('fb-comment').value.trim();
   document.getElementById('feedback-modal').classList.remove('show');
-  showTyping(() => addBotMsg(
-    `感謝您的評分 ${stars}！${comment ? '<br>您的意見「' + comment + '」我們已收到，將持續改善服務。' : '您的意見對我們非常重要。'}<br><br>祝您網路順暢、通話清晰！`,
-    [{ label: '🔄 重新開始', key: '__reset__' }]
-  ));
+  addBotMsg(`感謝您的評分 ${stars}！${comment ? '您的意見「' + escHtml(comment) + '」我們已收到。' : '您的意見對我們非常重要。'}<br><br>祝您網路順暢、通話清晰！`, ['🔄 重新開始 __reset__']);
 }
-
-// ── 更新 click handler 支援 __feedback__ 和 __modal__ ──
-document.addEventListener('click', e => {
-  if (e.target.classList.contains('qbtn')) {
-    const oc = e.target.getAttribute('onclick') || '';
-    if (oc.includes('__reset__')) resetChat();
-    else if (oc.includes('__modal__')) showModal();
-    else if (oc.includes('__feedback__')) {
-      feedbackRating = 0;
-      document.querySelectorAll('.star-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById('fb-comment').value = '';
-      document.getElementById('fb-status').className = 'send-status';
-      document.getElementById('feedback-modal').classList.add('show');
-    }
-  }
-});
 
 // 啟動
 init();
