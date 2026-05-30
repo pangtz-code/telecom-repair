@@ -151,6 +151,9 @@ textarea.pr-input { min-height: 70px; resize: vertical; }
 
 @media(max-width:600px){ .sidebar{display:none} .stats-row{grid-template-columns:1fr 1fr} .pr-grid{grid-template-columns:1fr} }
 </style>
+<!-- Office 檔案解析套件 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
 
@@ -227,9 +230,9 @@ textarea.pr-input { min-height: 70px; resize: vertical; }
           ondrop="handleDrop(event)">
           <div class="uz-icon">📄</div>
           <p>拖曳檔案至此，或點擊選擇檔案</p>
-          <span>支援 .txt / .xlsx / .xls / .csv（系統自動讀取文字內容）</span>
+          <span>支援 .txt / .docx / .xlsx / .csv（系統自動解析文字內容）</span>
         </div>
-        <input type="file" id="file-input" accept=".txt,.xlsx,.xls,.csv" onchange="handleFileUpload(event)">
+        <input type="file" id="file-input" accept=".txt,.xlsx,.xls,.csv,.docx,.doc" onchange="handleFileUpload(event)">
 
         <div class="or-divider">或直接貼上文字</div>
 
@@ -499,13 +502,51 @@ function handleFileUpload(e) {
   const file = e.target.files[0];
   if (file) readFile(file);
 }
-function readFile(file) {
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    document.getElementById('raw-text').value = e.target.result;
-    showToast('檔案已載入，請按「AI 解析」', 'info');
-  };
-  reader.readAsText(file, 'UTF-8');
+async function readFile(file) {
+  const ext = file.name.split('.').pop().toLowerCase();
+  showLoading('讀取檔案中...');
+  try {
+    if (ext === 'docx' || ext === 'doc') {
+      // Word 檔案：用 mammoth 解析
+      const arrayBuffer = await file.arrayBuffer();
+      const result = await mammoth.extractRawText({ arrayBuffer });
+      document.getElementById('raw-text').value = result.value;
+      showToast('Word 檔案已解析，請按「AI 解析」', 'info');
+
+    } else if (ext === 'xlsx' || ext === 'xls') {
+      // Excel 檔案：用 SheetJS 解析，把所有工作表的內容轉成文字
+      const arrayBuffer = await file.arrayBuffer();
+      const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+      let allText = '';
+      workbook.SheetNames.forEach(sheetName => {
+        const sheet = workbook.Sheets[sheetName];
+        const csv = XLSX.utils.sheet_to_csv(sheet, { skipHidden: true });
+        // 過濾空行
+        const lines = csv.split('\n').filter(l => l.replace(/,/g,'').trim());
+        if (lines.length > 1) {
+          allText += `【${sheetName}】\n` + lines.join('\n') + '\n\n';
+        }
+      });
+      document.getElementById('raw-text').value = allText.trim();
+      showToast('Excel 檔案已解析，請按「AI 解析」', 'info');
+
+    } else if (ext === 'csv') {
+      // CSV：直接讀取文字
+      const text = await file.text();
+      document.getElementById('raw-text').value = text;
+      showToast('CSV 已載入，請按「AI 解析」', 'info');
+
+    } else {
+      // 純文字
+      const text = await file.text();
+      document.getElementById('raw-text').value = text;
+      showToast('檔案已載入，請按「AI 解析」', 'info');
+    }
+  } catch(e) {
+    showToast('檔案讀取失敗：' + e.message, 'err');
+  } finally {
+    hideLoading();
+  }
 }
 
 // ── AI 解析 ──
