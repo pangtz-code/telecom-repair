@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>通信障礙態樣管理後台</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f0f4f9; --surface: #ffffff; --surface2: #f8fafc;
+  --blue: #1a6fd4; --blue-dark: #1355a8; --blue-light: #e8f0fb;
+  --teal: #0fa890; --amber: #f5a623; --red: #e8445a; --green: #27ae60;
+  --text: #1a2332; --text2: #5a6a7e; --border: #dde3ec;
+  --font: 'Noto Sans TC', sans-serif; --mono: 'JetBrains Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; }
+
+/* ── Header ── */
+header { background: #0d1f3c; padding: 0 28px; height: 56px; display: flex; align-items: center; gap: 12px; }
+.header-logo { width: 32px; height: 32px; background: linear-gradient(135deg,#1a6fd4,#0fa890); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+header h1 { font-size: 15px; font-weight: 600; color: #fff; }
+header p { font-size: 11px; color: #8a9bbf; margin-top: 1px; }
+.header-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.online-badge { background: rgba(39,174,96,0.15); border: 1px solid rgba(39,174,96,0.4); color: #2ecc71; font-size: 11px; font-family: var(--mono); padding: 3px 10px; border-radius: 20px; display: flex; align-items: center; gap: 5px; }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: #2ecc71; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+/* ── Layout ── */
+.layout { display: flex; height: calc(100vh - 56px); }
+.sidebar { width: 200px; background: var(--surface); border-right: 1px solid var(--border); padding: 16px 0; flex-shrink: 0; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 20px; font-size: 13px; color: var(--text2); cursor: pointer; border-left: 3px solid transparent; transition: all 0.15s; }
+.nav-item:hover { background: var(--blue-light); color: var(--blue); }
+.nav-item.active { border-left-color: var(--blue); background: var(--blue-light); color: var(--blue); font-weight: 500; }
+.nav-item .ni { font-size: 16px; }
+.nav-divider { height: 1px; background: var(--border); margin: 8px 16px; }
+
+/* ── Main ── */
+.main { flex: 1; overflow-y: auto; padding: 24px 28px; }
+.page { display: none; }
+.page.active { display: block; }
+.page-title { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.page-sub { font-size: 13px; color: var(--text2); margin-bottom: 20px; }
+
+/* ── Cards ── */
+.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; }
+.stat-label { font-size: 12px; color: var(--text2); margin-bottom: 6px; }
+.stat-val { font-size: 26px; font-weight: 700; color: var(--text); font-family: var(--mono); }
+.stat-sub { font-size: 11px; color: var(--text2); margin-top: 2px; }
+
+/* ── Upload Zone ── */
+.upload-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+.upload-zone { border: 2px dashed var(--border); border-radius: 10px; padding: 32px; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--surface2); }
+.upload-zone:hover, .upload-zone.drag { border-color: var(--blue); background: var(--blue-light); }
+.upload-zone .uz-icon { font-size: 36px; margin-bottom: 10px; }
+.upload-zone p { font-size: 14px; color: var(--text2); }
+.upload-zone span { font-size: 12px; color: var(--text2); opacity: 0.7; }
+#file-input { display: none; }
+
+.or-divider { text-align: center; color: var(--text2); font-size: 13px; margin: 16px 0; position: relative; }
+.or-divider::before, .or-divider::after { content:''; position:absolute; top:50%; width: 44%; height:1px; background: var(--border); }
+.or-divider::before { left: 0; } .or-divider::after { right: 0; }
+
+textarea.raw-input { width: 100%; min-height: 140px; border: 1px solid var(--border); border-radius: 8px; padding: 12px; font-family: var(--font); font-size: 13px; color: var(--text); resize: vertical; outline: none; transition: border-color 0.2s; background: var(--surface2); }
+textarea.raw-input:focus { border-color: var(--blue); }
+textarea.raw-input::placeholder { color: #aab; }
+
+/* ── Buttons ── */
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; border-radius: 8px; font-size: 13px; font-family: var(--font); font-weight: 500; cursor: pointer; border: none; transition: all 0.15s; }
+.btn-primary { background: var(--blue); color: #fff; }
+.btn-primary:hover { background: var(--blue-dark); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-success { background: var(--green); color: #fff; }
+.btn-success:hover { filter: brightness(0.9); }
+.btn-danger { background: var(--red); color: #fff; }
+.btn-danger:hover { filter: brightness(0.9); }
+.btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text2); }
+.btn-outline:hover { border-color: var(--blue); color: var(--blue); }
+.btn-amber { background: var(--amber); color: #fff; }
+
+/* ── Parse Result ── */
+.parse-result { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-top: 16px; display: none; }
+.parse-result.show { display: block; }
+.pr-title { font-size: 14px; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.pr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.pr-field { display: flex; flex-direction: column; gap: 4px; }
+.pr-field.full { grid-column: 1 / -1; }
+.pr-label { font-size: 11px; color: var(--text2); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+.pr-input { border: 1px solid var(--border); border-radius: 6px; padding: 7px 10px; font-size: 13px; font-family: var(--font); color: var(--text); background: var(--surface2); outline: none; }
+.pr-input:focus { border-color: var(--blue); }
+select.pr-input { cursor: pointer; }
+textarea.pr-input { min-height: 70px; resize: vertical; }
+
+/* ── 重複警告 ── */
+.dup-warning { background: #fff8e1; border: 1px solid #f5c46a; border-radius: 8px; padding: 12px 16px; margin-bottom: 14px; font-size: 13px; }
+.dup-warning strong { color: #b7770d; }
+.dup-ok { background: #f0faf4; border: 1px solid #a8d5b5; border-radius: 8px; padding: 12px 16px; margin-bottom: 14px; font-size: 13px; color: #1e6e3a; }
+
+/* ── 態樣列表 ── */
+.list-toolbar { display: flex; gap: 10px; margin-bottom: 16px; align-items: center; }
+.search-box { flex: 1; border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; font-family: var(--font); font-size: 13px; color: var(--text); outline: none; }
+.search-box:focus { border-color: var(--blue); }
+.filter-select { border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; font-family: var(--font); font-size: 13px; color: var(--text); background: var(--surface); outline: none; cursor: pointer; }
+
+.pattern-table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: 12px; overflow: hidden; border: 1px solid var(--border); font-size: 13px; }
+.pattern-table th { background: #f1f5fb; padding: 11px 14px; text-align: left; font-weight: 600; font-size: 12px; color: var(--text2); border-bottom: 1px solid var(--border); white-space: nowrap; }
+.pattern-table td { padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.pattern-table tr:last-child td { border-bottom: none; }
+.pattern-table tr:hover td { background: var(--surface2); }
+.cat-badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+.cat-net { background: #e3eef9; color: #1a6fd4; }
+.cat-tel { background: #e6f4ea; color: #1e7e34; }
+.cat-mod { background: #fff8e1; color: #b7770d; }
+.resp-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; font-family: var(--mono); }
+.resp-派工 { background: #fdecea; color: #c0392b; }
+.resp-用戶端 { background: #e8f8f0; color: #1e6e3a; }
+.resp-局端 { background: #e8f0fb; color: #1a6fd4; }
+.resp-觀察中 { background: #fff8e1; color: #b7770d; }
+.table-actions { display: flex; gap: 6px; }
+.act-btn { padding: 4px 10px; border-radius: 5px; font-size: 11px; cursor: pointer; border: 1px solid; font-family: var(--font); transition: all 0.1s; }
+.act-edit { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
+.act-edit:hover { background: var(--blue); color: #fff; }
+.act-del { border-color: #fcc; color: var(--red); background: #fff5f5; }
+.act-del:hover { background: var(--red); color: #fff; }
+.phenomenon-cell { max-width: 200px; }
+.steps-cell { max-width: 220px; white-space: pre-line; font-size: 12px; color: var(--text2); }
+.empty-state { text-align: center; padding: 48px; color: var(--text2); }
+.empty-state .es-icon { font-size: 40px; margin-bottom: 12px; }
+
+/* ── Modal ── */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 100; align-items: center; justify-content: center; }
+.modal-overlay.show { display: flex; }
+.modal { background: var(--surface); border-radius: 14px; padding: 24px; width: 560px; max-width: 95vw; max-height: 90vh; overflow-y: auto; box-shadow: 0 8px 32px rgba(0,0,0,0.12); }
+.modal-title { font-size: 15px; font-weight: 600; margin-bottom: 16px; }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
+
+/* ── Toast ── */
+.toast { position: fixed; bottom: 24px; right: 24px; padding: 12px 20px; border-radius: 10px; font-size: 13px; font-weight: 500; z-index: 200; opacity: 0; transform: translateY(8px); transition: all 0.25s; pointer-events: none; }
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast.ok { background: #1e6e3a; color: #fff; }
+.toast.err { background: var(--red); color: #fff; }
+.toast.info { background: var(--blue); color: #fff; }
+
+/* ── Loading ── */
+.loading-overlay { display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.75); z-index: 150; align-items: center; justify-content: center; flex-direction: column; gap: 14px; }
+.loading-overlay.show { display: flex; }
+.spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--blue); border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { font-size: 14px; color: var(--text2); }
+
+@media(max-width:600px){ .sidebar{display:none} .stats-row{grid-template-columns:1fr 1fr} .pr-grid{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-logo">🛠️</div>
+  <div>
+    <h1>態樣管理後台</h1>
+    <p>通信障礙智慧報修系統</p>
+  </div>
+  <div class="header-right">
+    <div class="online-badge"><div class="dot"></div>CONNECTED</div>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="sidebar">
+    <div class="nav-item active" onclick="switchPage('dashboard')" id="nav-dashboard">
+      <span class="ni">📊</span> 總覽
+    </div>
+    <div class="nav-item" onclick="switchPage('upload')" id="nav-upload">
+      <span class="ni">📤</span> 上傳態樣
+    </div>
+    <div class="nav-divider"></div>
+    <div class="nav-item" onclick="switchPage('list')" id="nav-list">
+      <span class="ni">📋</span> 態樣清單
+    </div>
+  </nav>
+
+  <div class="main">
+
+    <!-- ── 總覽 ── -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-title">📊 系統總覽</div>
+      <div class="page-sub">態樣知識庫狀態一覽</div>
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label">態樣總數</div>
+          <div class="stat-val" id="stat-total">—</div>
+          <div class="stat-sub">筆查修紀錄</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">網路類</div>
+          <div class="stat-val" id="stat-net" style="color:#1a6fd4">—</div>
+          <div class="stat-sub">筆</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">市話類</div>
+          <div class="stat-val" id="stat-tel" style="color:#1e7e34">—</div>
+          <div class="stat-sub">筆</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">MOD 類</div>
+          <div class="stat-val" id="stat-mod" style="color:#b7770d">—</div>
+          <div class="stat-sub">筆</div>
+        </div>
+      </div>
+      <div class="upload-card">
+        <div style="font-size:14px;font-weight:600;margin-bottom:8px;">🕐 最新態樣</div>
+        <div id="recent-list" style="font-size:13px;color:var(--text2);">載入中...</div>
+      </div>
+    </div>
+
+    <!-- ── 上傳態樣 ── -->
+    <div class="page" id="page-upload">
+      <div class="page-title">📤 上傳態樣</div>
+      <div class="page-sub">支援任意格式文字，AI 自動解析並偵測重複</div>
+
+      <div class="upload-card">
+        <div style="font-size:14px;font-weight:600;margin-bottom:14px;">① 貼上或上傳工程師記錄</div>
+
+        <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()"
+          ondragover="event.preventDefault();this.classList.add('drag')"
+          ondragleave="this.classList.remove('drag')"
+          ondrop="handleDrop(event)">
+          <div class="uz-icon">📄</div>
+          <p>拖曳檔案至此，或點擊選擇檔案</p>
+          <span>支援 .txt / .xlsx / .xls / .csv（系統自動讀取文字內容）</span>
+        </div>
+        <input type="file" id="file-input" accept=".txt,.xlsx,.xls,.csv" onchange="handleFileUpload(event)">
+
+        <div class="or-divider">或直接貼上文字</div>
+
+        <textarea class="raw-input" id="raw-text" placeholder="請直接貼上工程師的查修記錄，不限格式。例如：
+障礙現象：數據機WAN燈紅燈，網路完全斷線
+原因：光纖接頭污損，收訊功率不足
+處理：清潔接頭並更換跳線後恢復
+負責人：王小明"></textarea>
+
+        <div style="display:flex;gap:10px;margin-top:12px;">
+          <button class="btn btn-primary" id="parse-btn" onclick="parseContent()">
+            🤖 AI 解析
+          </button>
+          <button class="btn btn-outline" onclick="document.getElementById('raw-text').value='';document.getElementById('parse-result').classList.remove('show')">
+            清除
+          </button>
+        </div>
+      </div>
+
+      <!-- 解析結果 -->
+      <div class="parse-result" id="parse-result">
+        <div class="pr-title">
+          <span>② AI 解析結果</span>
+          <span style="font-size:11px;color:var(--text2);font-weight:400;">可直接修改欄位後再儲存</span>
+        </div>
+
+        <div id="dup-alert"></div>
+
+        <div class="pr-grid">
+          <div class="pr-field">
+            <div class="pr-label">障礙類別 *</div>
+            <select class="pr-input" id="f-category">
+              <option>網路類</option><option>市話類</option><option>MOD類</option>
+            </select>
+          </div>
+          <div class="pr-field">
+            <div class="pr-label">權責判斷 *</div>
+            <select class="pr-input" id="f-responsibility">
+              <option>派工</option><option>用戶端</option><option>局端</option><option>觀察中</option>
+            </select>
+          </div>
+          <div class="pr-field full">
+            <div class="pr-label">障礙現象 *</div>
+            <input class="pr-input" id="f-phenomenon" type="text">
+          </div>
+          <div class="pr-field full">
+            <div class="pr-label">用戶描述</div>
+            <input class="pr-input" id="f-user_desc" type="text">
+          </div>
+          <div class="pr-field full">
+            <div class="pr-label">可能原因 *</div>
+            <input class="pr-input" id="f-cause" type="text">
+          </div>
+          <div class="pr-field full">
+            <div class="pr-label">排查步驟 *</div>
+            <textarea class="pr-input" id="f-steps"></textarea>
+          </div>
+          <div class="pr-field full">
+            <div class="pr-label">處置方式 *</div>
+            <textarea class="pr-input" id="f-solution"></textarea>
+          </div>
+          <div class="pr-field">
+            <div class="pr-label">設備型號</div>
+            <input class="pr-input" id="f-device" type="text">
+          </div>
+          <div class="pr-field">
+            <div class="pr-label">錯誤代碼</div>
+            <input class="pr-input" id="f-error_code" type="text">
+          </div>
+          <div class="pr-field full">
+            <div class="pr-label">備註</div>
+            <input class="pr-input" id="f-note" type="text">
+          </div>
+          <div class="pr-field">
+            <div class="pr-label">填寫人</div>
+            <input class="pr-input" id="f-author" type="text">
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn btn-success" id="save-btn" onclick="savePattern()">
+            ✅ 確認儲存至資料庫
+          </button>
+          <button class="btn btn-amber" id="update-btn" onclick="updateExisting()" style="display:none">
+            🔄 更新現有態樣
+          </button>
+          <button class="btn btn-outline" onclick="document.getElementById('parse-result').classList.remove('show')">
+            取消
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 態樣清單 ── -->
+    <div class="page" id="page-list">
+      <div class="page-title">📋 態樣清單</div>
+      <div class="page-sub">瀏覽、搜尋、編輯、刪除現有態樣</div>
+
+      <div class="list-toolbar">
+        <input class="search-box" id="search-box" type="text" placeholder="🔍 搜尋障礙現象、原因、處置方式..." oninput="renderTable()">
+        <select class="filter-select" id="filter-cat" onchange="renderTable()">
+          <option value="">全部類別</option>
+          <option>網路類</option><option>市話類</option><option>MOD類</option>
+        </select>
+        <select class="filter-select" id="filter-resp" onchange="renderTable()">
+          <option value="">全部權責</option>
+          <option>派工</option><option>用戶端</option><option>局端</option><option>觀察中</option>
+        </select>
+        <button class="btn btn-primary" onclick="loadPatterns()">🔄 重新整理</button>
+      </div>
+
+      <div id="table-wrap"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 編輯 Modal -->
+<div class="modal-overlay" id="edit-modal">
+  <div class="modal">
+    <div class="modal-title">✏️ 編輯態樣</div>
+    <div class="pr-grid">
+      <div class="pr-field">
+        <div class="pr-label">障礙類別</div>
+        <select class="pr-input" id="e-category">
+          <option>網路類</option><option>市話類</option><option>MOD類</option>
+        </select>
+      </div>
+      <div class="pr-field">
+        <div class="pr-label">權責判斷</div>
+        <select class="pr-input" id="e-responsibility">
+          <option>派工</option><option>用戶端</option><option>局端</option><option>觀察中</option>
+        </select>
+      </div>
+      <div class="pr-field full"><div class="pr-label">障礙現象</div><input class="pr-input" id="e-phenomenon" type="text"></div>
+      <div class="pr-field full"><div class="pr-label">可能原因</div><input class="pr-input" id="e-cause" type="text"></div>
+      <div class="pr-field full"><div class="pr-label">排查步驟</div><textarea class="pr-input" id="e-steps"></textarea></div>
+      <div class="pr-field full"><div class="pr-label">處置方式</div><textarea class="pr-input" id="e-solution"></textarea></div>
+      <div class="pr-field"><div class="pr-label">設備型號</div><input class="pr-input" id="e-device" type="text"></div>
+      <div class="pr-field"><div class="pr-label">填寫人</div><input class="pr-input" id="e-author" type="text"></div>
+      <div class="pr-field full"><div class="pr-label">備註</div><input class="pr-input" id="e-note" type="text"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeEditModal()">取消</button>
+      <button class="btn btn-primary" onclick="saveEdit()">儲存</button>
+    </div>
+  </div>
+</div>
+
+<!-- Loading -->
+<div class="loading-overlay" id="loading">
+  <div class="spinner"></div>
+  <div class="loading-text" id="loading-text">AI 解析中...</div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+const WORKER = 'https://telecom-ai-proxy.pangtz1022.workers.dev';
+let allPatterns = [];
+let editingRow = null;
+let similarRow = null;
+
+// ── 頁面切換 ──
+function switchPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.getElementById('nav-' + name).classList.add('active');
+  if (name === 'list') loadPatterns();
+  if (name === 'dashboard') loadDashboard();
+}
+
+// ── Toast ──
+function showToast(msg, type='ok') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = `toast ${type} show`;
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── Loading ──
+function showLoading(text='處理中...') {
+  document.getElementById('loading-text').textContent = text;
+  document.getElementById('loading').classList.add('show');
+}
+function hideLoading() { document.getElementById('loading').classList.remove('show'); }
+
+// ── 讀取資料 ──
+async function loadPatterns() {
+  try {
+    const res = await fetch(WORKER + '/patterns');
+    const data = await res.json();
+    allPatterns = data.patterns || [];
+    renderTable();
+  } catch(e) {
+    showToast('讀取失敗：' + e.message, 'err');
+  }
+}
+
+async function loadDashboard() {
+  await loadPatterns();
+  document.getElementById('stat-total').textContent = allPatterns.length;
+  document.getElementById('stat-net').textContent = allPatterns.filter(p=>p.category==='網路類').length;
+  document.getElementById('stat-tel').textContent = allPatterns.filter(p=>p.category==='市話類').length;
+  document.getElementById('stat-mod').textContent = allPatterns.filter(p=>p.category==='MOD類').length;
+
+  const recent = allPatterns.slice(-5).reverse();
+  const recentHtml = recent.length
+    ? recent.map(p => `<div style="padding:8px 0;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:center;">
+        <span class="cat-badge cat-${p.category==='網路類'?'net':p.category==='市話類'?'tel':'mod'}">${p.category}</span>
+        <span style="color:var(--text)">${p.phenomenon}</span>
+        <span style="margin-left:auto;font-size:11px;font-family:var(--mono);color:var(--text2)">${p.upload_time||''}</span>
+      </div>`).join('')
+    : '<div style="color:var(--text2);padding:12px 0;">尚無態樣資料</div>';
+  document.getElementById('recent-list').innerHTML = recentHtml;
+}
+
+// ── 渲染表格 ──
+function renderTable() {
+  const search = document.getElementById('search-box').value.toLowerCase();
+  const filterCat = document.getElementById('filter-cat').value;
+  const filterResp = document.getElementById('filter-resp').value;
+
+  const filtered = allPatterns.filter(p => {
+    const matchSearch = !search || [p.phenomenon,p.cause,p.solution,p.steps].join(' ').toLowerCase().includes(search);
+    const matchCat = !filterCat || p.category === filterCat;
+    const matchResp = !filterResp || p.responsibility === filterResp;
+    return matchSearch && matchCat && matchResp;
+  });
+
+  const wrap = document.getElementById('table-wrap');
+  if (!filtered.length) {
+    wrap.innerHTML = `<div class="empty-state"><div class="es-icon">📭</div><div>找不到符合的態樣</div></div>`;
+    return;
+  }
+
+  wrap.innerHTML = `<table class="pattern-table">
+    <thead><tr>
+      <th>ID</th><th>類別</th><th>障礙現象</th><th>可能原因</th>
+      <th>排查步驟</th><th>權責</th><th>填寫人</th><th>操作</th>
+    </tr></thead>
+    <tbody>${filtered.map(p => `<tr>
+      <td style="font-family:var(--mono);color:var(--text2)">#${p.id}</td>
+      <td><span class="cat-badge cat-${p.category==='網路類'?'net':p.category==='市話類'?'tel':'mod'}">${p.category}</span></td>
+      <td class="phenomenon-cell">${p.phenomenon}</td>
+      <td style="max-width:180px;font-size:12px;color:var(--text2)">${p.cause}</td>
+      <td class="steps-cell">${(p.steps||'').substring(0,80)}${p.steps?.length>80?'...':''}</td>
+      <td><span class="resp-badge resp-${p.responsibility}">${p.responsibility}</span></td>
+      <td style="font-size:12px;color:var(--text2)">${p.author||'—'}</td>
+      <td><div class="table-actions">
+        <button class="act-btn act-edit" onclick="openEdit(${p._row})">編輯</button>
+        <button class="act-btn act-del" onclick="deletePattern(${p._row}, '${p.phenomenon.replace(/'/g,"\\'")}')">刪除</button>
+      </div></td>
+    </tr>`).join('')}</tbody>
+  </table>`;
+}
+
+// ── 檔案上傳 ──
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('upload-zone').classList.remove('drag');
+  const file = e.dataTransfer.files[0];
+  if (file) readFile(file);
+}
+function handleFileUpload(e) {
+  const file = e.target.files[0];
+  if (file) readFile(file);
+}
+function readFile(file) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    document.getElementById('raw-text').value = e.target.result;
+    showToast('檔案已載入，請按「AI 解析」', 'info');
+  };
+  reader.readAsText(file, 'UTF-8');
+}
+
+// ── AI 解析 ──
+async function parseContent() {
+  const text = document.getElementById('raw-text').value.trim();
+  if (!text) { showToast('請先輸入或上傳內容', 'err'); return; }
+
+  showLoading('AI 解析中，請稍候...');
+  document.getElementById('parse-btn').disabled = true;
+
+  try {
+    const res = await fetch(WORKER + '/parse', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text })
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+
+    // 填入解析結果
+    const fields = ['category','responsibility','phenomenon','user_desc','cause','steps','solution','device','error_code','note','author'];
+    fields.forEach(f => {
+      const el = document.getElementById('f-' + f);
+      if (el && data[f]) el.value = data[f];
+    });
+
+    // 重複偵測
+    const dup = data.similarity_check || {};
+    const dupAlert = document.getElementById('dup-alert');
+    similarRow = null;
+    document.getElementById('update-btn').style.display = 'none';
+
+    if (dup.is_duplicate && dup.similarity_score >= 75) {
+      const similar = allPatterns.find(p => String(p.id) === String(dup.similar_id));
+      similarRow = similar?._row || null;
+      dupAlert.innerHTML = `<div class="dup-warning">
+        ⚠️ <strong>偵測到相似態樣（相似度 ${dup.similarity_score}%）</strong><br>
+        與現有 #${dup.similar_id} 相似：${dup.reason}<br>
+        <small>您可以選擇「更新現有態樣」或「仍要新增」</small>
+      </div>`;
+      document.getElementById('update-btn').style.display = 'inline-flex';
+    } else {
+      dupAlert.innerHTML = `<div class="dup-ok">✅ 未發現重複態樣，可直接儲存</div>`;
+    }
+
+    document.getElementById('parse-result').classList.add('show');
+    showToast('AI 解析完成！請確認內容後儲存', 'ok');
+  } catch(e) {
+    showToast('解析失敗：' + e.message, 'err');
+  } finally {
+    hideLoading();
+    document.getElementById('parse-btn').disabled = false;
+  }
+}
+
+// ── 儲存新態樣 ──
+async function savePattern() {
+  const pattern = getFormData('f-');
+  if (!pattern.phenomenon || !pattern.cause) {
+    showToast('請填寫必填欄位（障礙現象、可能原因）', 'err'); return;
+  }
+  showLoading('儲存至資料庫...');
+  try {
+    const res = await fetch(WORKER + '/patterns', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pattern })
+    });
+    const data = await res.json();
+    if (!data.success) throw new Error('儲存失敗');
+    showToast(`✅ 態樣 #${data.id} 已成功儲存！`, 'ok');
+    document.getElementById('parse-result').classList.remove('show');
+    document.getElementById('raw-text').value = '';
+    await loadPatterns();
+  } catch(e) {
+    showToast('儲存失敗：' + e.message, 'err');
+  } finally { hideLoading(); }
+}
+
+// ── 更新現有態樣 ──
+async function updateExisting() {
+  if (!similarRow) { showToast('找不到目標態樣', 'err'); return; }
+  const pattern = getFormData('f-');
+  showLoading('更新態樣中...');
+  try {
+    const res = await fetch(WORKER + '/patterns/' + similarRow, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pattern })
+    });
+    const data = await res.json();
+    if (!data.success) throw new Error('更新失敗');
+    showToast('✅ 態樣已成功更新！', 'ok');
+    document.getElementById('parse-result').classList.remove('show');
+    document.getElementById('raw-text').value = '';
+    await loadPatterns();
+  } catch(e) {
+    showToast('更新失敗：' + e.message, 'err');
+  } finally { hideLoading(); }
+}
+
+// ── 編輯 Modal ──
+function openEdit(rowNum) {
+  const p = allPatterns.find(p => p._row === rowNum);
+  if (!p) return;
+  editingRow = rowNum;
+  const fields = ['category','responsibility','phenomenon','cause','steps','solution','device','author','note'];
+  fields.forEach(f => {
+    const el = document.getElementById('e-' + f);
+    if (el) el.value = p[f] || '';
+  });
+  document.getElementById('edit-modal').classList.add('show');
+}
+function closeEditModal() { document.getElementById('edit-modal').classList.remove('show'); editingRow = null; }
+
+async function saveEdit() {
+  if (!editingRow) return;
+  const pattern = getFormData('e-');
+  showLoading('儲存中...');
+  try {
+    const res = await fetch(WORKER + '/patterns/' + editingRow, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pattern })
+    });
+    const data = await res.json();
+    if (!data.success) throw new Error('儲存失敗');
+    showToast('✅ 已儲存！', 'ok');
+    closeEditModal();
+    await loadPatterns();
+  } catch(e) {
+    showToast('失敗：' + e.message, 'err');
+  } finally { hideLoading(); }
+}
+
+// ── 刪除態樣 ──
+async function deletePattern(rowNum, name) {
+  if (!confirm(`確定要刪除「${name}」這筆態樣嗎？此操作無法復原。`)) return;
+  showLoading('刪除中...');
+  try {
+    const res = await fetch(WORKER + '/patterns/' + rowNum, { method: 'DELETE' });
+    const data = await res.json();
+    if (!data.success) throw new Error('刪除失敗');
+    showToast('✅ 已刪除', 'ok');
+    await loadPatterns();
+  } catch(e) {
+    showToast('刪除失敗：' + e.message, 'err');
+  } finally { hideLoading(); }
+}
+
+// ── 工具：讀取表單 ──
+function getFormData(prefix) {
+  const fields = ['category','responsibility','phenomenon','user_desc','cause','steps','solution','device','error_code','note','author'];
+  const result = {};
+  fields.forEach(f => {
+    const el = document.getElementById(prefix + f);
+    if (el) result[f] = el.value.trim();
+  });
+  return result;
+}
+
+// 初始載入
+loadDashboard();
+</script>
+</body>
+</html>
